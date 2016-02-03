@@ -12,72 +12,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "commandParse.h"
+#include "constants.h"
+
+#define MAX 256
+#define CMD_MAX 10
 
 /*
-   This function takes as input the following:
-     buf: This represents the string for which the tokens are to be determined for
-     tokens: This represents the array that the found tokens are tbe put into
-
-   The function strtok() is used to find the tokens.  The delimiter used
-   to distinguish tokens is a space
-*/
-
 static inline char* ignore_space (char* c) {
 	while(isspace(*c))
 		++c; // skip the space and move on to next character
 	return c;
-}
-
-void init_info(parseInfo *p)
-{
-	// initialize parseInfo struct
-}
+}*/
 
 // parse a single command
-void parse_command (char * command, struct commandType *comm)
+void parse_command (char * token, struct commandType *comm)
 {
 	// code to parse a single command here
 }
 
 // parse commandline for space separated commands
-static void parse_cmdline (char *cmdline)
+/*
+ * Taken from assignment token parser example in CS 3305 by Hannan Lutfiya
+ *
+ * This function takes as input the following:
+ * 	- buf: This represents the string for which the tokens are to be determined for.
+ * 	- tokens: This represents the array that the found tokens are put into.
+ * 	- The function strtok() is used to find the tokens.
+ * The delimiter used to distinguish tokens is a space
+ */
+void parse_tokens(char *buf, char *tokens[])
 {
-	cmdline = skipwhite(cmd);
-	char* next = strchr(cmdline, ' ');
-	int i = 0;
- 
-	while(next != NULL) {
-		next[0] = '\0';
-		args[i] = cmdline;
-		++i;
-		cmdline = skipwhite(next + 1);
-		next = strchr(cmd, ' ');
+	/*foreach cmd in cmdline {
+      if (cmd == command) {
+        parse_command(cmd, type)
+      }*/
+	char input_line[MAX];
+	char *line;
+	int i,n;
+	
+	bool IOin, IOout = false;
+
+	i = 0;
+	line = buf;
+	tokens[i] = strtok(line, " ");
+	do {
+		i++;
+		line = NULL;
+		tokens[i] = strtok(line, " ");
+	} while(tokens[i] != NULL);
+	
+	n=i;
+	for (i = 0; i < n; i++)
+	{
+		// printf("extracted token is %s\n", tokens[i]);
+		if (strcmp(token[i], "<") == 0)
+			IOin = true;
+		if (strcmp(token[i], ">") == 0)
+			IOout = true;
 	}
- 
-	if (cmd[0] != '\0') {
-		args[i] = cmd;
-		next = strchr(cmd, '\n');
-		next[0] = '\0';
-		++i; 
-	}
- 
-	args[i] = NULL;
-	/* foreach cmd in cmdline {
-		if (cmd == command){
-			parse_command(cmd,type) }
-	} */
 }
 
-// prints out parse struct
-void print_info (parseInfo *info)
+/* prints out parse struct
+void print_tokens (char *tokens [])
 {
-	foreach type in parseInfo {
-		printf("type_name: type");
-	}
-}
+	char input_line[MAX], *tokens[CMD_MAX];
+	int i, n;
+	
+	printf("hanan> ");
+	if (fgets(input_line,MAX,stdin) != NULL)
+		n= make_tokenlist(input_line, tokens);
+	else
+		printf("huh?\n");
 
-// free the memory of parseInfo
-void free_info (parseInfo *info) {
-	foreach memory_block in parseInfo
-		free(memory_block)
-}
+	for (i = 0; i < n; i++)
+		printf("extracted token is %s\n", tokens[i]);
+}*/
