@@ -12,6 +12,13 @@ void handle_signal(int signo)
 	fflush(stdout);
 }
 
+void fill_argv(char *tmp_argv)
+{
+	char *foo = tmp_argv;
+	int index = 0;
+	char ret[100];
+}
+
 int main(int argc, char *argv[], char *envp[])
 {
 	signal(SIGINT, SIG_IGN);
@@ -19,8 +26,14 @@ int main(int argc, char *argv[], char *envp[])
 	printf("\nDavidCosman> ");
 	while(c != EOF) {
 		c = getchar();
-		if (c == '\n')
-			printf("DavidCosman> ");
+		switch(c) {
+			case '\n': /* parse and execute */
+				bzero(tmp, sizeof(tmp));
+				break;
+			default: strncat(tmp, &c, 1);
+				break;
+		}
+		printf("DavidCosman> ");
 	}
 	printf("\n");
 	return 0;
