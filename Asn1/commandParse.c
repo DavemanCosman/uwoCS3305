@@ -42,7 +42,7 @@
  *
  * continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
  */
-void commandParse (struct commandType* command)
+void commandParse (struct commandType *command)
 {
 	char* cmd = (*command).line;		// line read to be parsed into tokens
 	bool nextIOin, nextIOout = false;	// for IO redirection
