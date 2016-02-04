@@ -10,7 +10,7 @@
 
 void main (void)
 {
-	printf("\nGoodbye World\n");
+	printf("\nHello World\n");
 	char input_line[LINE_MAX];
 	char* command_line = input_line;
 
