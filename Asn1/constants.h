@@ -6,7 +6,7 @@
 #define constants_h 
 
 #define LINE_MAX 256
-#define CMD_MAX 10
+#define CMD_MAX 512
 #define MAX_HISTORY 10
 
 #define READ  0
