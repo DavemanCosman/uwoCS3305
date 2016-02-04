@@ -47,7 +47,7 @@ void commandParse (struct commandType* command)
 	char* cmd = (*command).line;		// line read to be parsed into tokens
 	bool nextIOin, nextIOout = false;	// for IO redirection
 
-	cmd = skipwhite(t, ' ');		// ignoring whitespaces
+	cmd = skipwhite(cmd, ' ');		// ignoring whitespaces
 	char* next = strchr( cmd, ' ' );	// to skip to the next command
 	int token_count = 0;			// keeps track of number of tokens, used for argument storage
 
@@ -79,11 +79,11 @@ void commandParse (struct commandType* command)
 		}
 		// Adds the token to the list of args otherwise
 		else {
-			(*command).args[n] = cmd;
+			(*command).args[token_count] = cmd;
 			++token_count;
 		}
 		cmd = skipwhite(next+1);
-		next = strchr(token, ' ');
+		next = strchr(cmd, ' ');
 	}
 	
 	// If last argument, interpret it
@@ -109,7 +109,7 @@ void commandParse (struct commandType* command)
 	}
 	
 	// Set end of args list to NULL
-	(*command).args[n]=NULL;
+	(*command).args[token_count]=NULL;
 }
 /**/
 void main (void)
