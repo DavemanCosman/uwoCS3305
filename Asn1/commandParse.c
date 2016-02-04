@@ -111,8 +111,3 @@ void commandParse (struct commandType* command)
 	// Set end of args list to NULL
 	(*command).args[token_count] = NULL;
 }
-/**/
-void main (void)
-{
-	printf("\nHello World\n");
-}
