@@ -57,14 +57,14 @@ void commandParse (struct commandType* command)
 		if (strcmp(cmd, ">") == 0) {
 			nextIOout = true;
 			cmd = skipwhite(next+1);
-			next = strtchr(cmd, ' ');
+			next = strchr(cmd, ' ');
 			continue;
 		}
 		// When the next token is '<', then next token is outstream
 		if (strcmp(cmd, "<") == 0) {
 			nextIOin = true;
 			cmd = skipwhite(next+1);
-			next = strtchr(cmd, ' ');
+			next = strchr(cmd, ' ');
 			continue;
 		}
 		
