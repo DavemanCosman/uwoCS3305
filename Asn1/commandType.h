@@ -11,8 +11,8 @@ struct commandType
 	char* args[CMD_MAX];
 	char* IOin;
 	char* IOout;
-	bool isFirstToken;
-	bool isLastToken;
+	bool is_first_comm;
+	bool is_last_comm;
 };
 
 /* Uses execvp to run a command
