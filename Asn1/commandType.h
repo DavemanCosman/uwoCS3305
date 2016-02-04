@@ -6,7 +6,7 @@
 // Simple structure to hold the command information
 struct commandType
 {
-	char* command;
+	char* line;
 	char* args[CMD_MAX];
 	char* IOin;
 	char* IOout;
