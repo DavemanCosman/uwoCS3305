@@ -45,13 +45,10 @@
 void commandParse (struct commandType* command)
 {
 	char* cmd = (*command).line;		// line read to be parsed into tokens
-	printf("Line before Parse: %s\n", cmd);
 	bool nextIOin, nextIOout = false;	// for IO redirection
 
 	cmd = skipwhite(cmd);			// ignoring whitespaces
-	printf("Line after first skipwhite: %s\n", cmd);
 	char* next = strchr( cmd, ' ' );	// to skip to the next command
-	printf("Pointer next initialized: %s\n", next);
 	int token_count = 0;			// keeps track of number of tokens, used for argument storage
 
 	while (next != NULL) {
@@ -60,7 +57,6 @@ void commandParse (struct commandType* command)
 		if (strcmp(cmd, ">") == 0) {
 			nextIOout = true;
 			cmd = skipwhite(next+1);
-			printf("IOout Encounter >\n");
 			next = strchr(cmd, ' ');
 			continue;
 		}
@@ -68,7 +64,6 @@ void commandParse (struct commandType* command)
 		if (strcmp(cmd, "<") == 0) {
 			nextIOin = true;
 			cmd = skipwhite(next+1);
-			printf("IOin Encounter <\n");
 			next = strchr(cmd, ' ');
 			continue;
 		}
@@ -76,12 +71,10 @@ void commandParse (struct commandType* command)
 		// Sets internal commandType io values and resets bools
 		if (nextIOout == true) {
 			(*command).IOout = cmd;
-			printf("Last, IOout char set: %s\n", (*command).IOout);
 			nextIOout = false;
 		}
 		else if (nextIOin == true) {
 			(*command).IOin = cmd;
-			printf("Last, IOin char set: %s\n", (*command).IOin);
 			nextIOin = false;
 		}
 		// Adds the token to the list of args otherwise
@@ -98,12 +91,10 @@ void commandParse (struct commandType* command)
 		// Sets internal commandType io values and resets bools
 		if (nextIOout == true) {
 			(*command).IOout = cmd;
-			printf("IOout char set: %s\n", (*command).IOout);
 			nextIOout = false;
 		}
 		else if (nextIOin == true) {
 			(*command).IOin = cmd;
-			printf("IOin char set: %s\n", (*command).IOin);
 			nextIOin = false;
 		}
 		// Adds the token to the list of args otherwise
@@ -121,6 +112,16 @@ void commandParse (struct commandType* command)
 	(*command).args[token_count] = NULL;
 }
 
-void print_tokens (){
-	// :P
+void print_tokens (struct commandType* command)
+{
+	if ((*command).line!=NULL) {
+		int i = 0;
+		while (command.args[i] != NULL) {
+		printf("extracted arg is %s\n", command.args[i]);
+		i++;
+		}
+	}
+	else{
+		printf("\nFatal error: NULL command given.\n");
+	}
 }
