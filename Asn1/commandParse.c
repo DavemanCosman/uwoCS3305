@@ -25,15 +25,15 @@ static inline char* ignore_space (char* c) {
 }*/
 
 // parse a single command
-void parse_command (char * token, struct commandType *comm)
+void parse_command (char *token, struct commandType *comm)
 {
 	// code to parse a single command here
 }
 
-// parse commandline for space separated commands
 /*
- * Taken from assignment token parser example in CS 3305 by Hannan Lutfiya
+ * Parse commandline for space separated commands
  *
+ * Taken from assignment token parser example in CS 3305 by Hannan Lutfiya
  * This function takes as input the following:
  * 	- buf: This represents the string for which the tokens are to be determined for.
  * 	- tokens: This represents the array that the found tokens are put into.
@@ -64,6 +64,7 @@ void parse_tokens(char *buf, char *tokens[])
 	n=i;
 	for (i = 0; i < n; i++)
 	{
+		
 		// printf("extracted token is %s\n", tokens[i]);
 		if (strcmp(token[i], "<") == 0)
 			IOin = true;
