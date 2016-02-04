@@ -15,6 +15,7 @@
 
 #include "commandType.h"
 #include "constants.h"
+#include "bool.h"
 
 /*
  * Skip whitespaces, such as ' ' or escape chars '\n'
