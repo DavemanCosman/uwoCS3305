@@ -6,16 +6,17 @@
  * 
  * A basic command parser
  */
-#include "commandParse.h"
+ 
+//#include "commandParse.h"
 
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "commandType.h"
-#include "constants.h"
-#include "bool.h"
+//#include "commandType.h"
+//#include "constants.h"
+//#include "bool.h"
 
 /*
  * Skip whitespaces, such as ' ' or escape chars '\n'
