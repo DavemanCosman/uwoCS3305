@@ -14,14 +14,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include "commandType.h"
-//#include "constants.h"
-//#include "bool.h"
+#include "commandType.h"
+#include "constants.h"
+#include "bool.h"
 
 /*
  * Skip whitespaces, such as ' ' or escape chars '\n'
  * See: http://www.tutorialspoint.com/c_standard_library/c_function_isspace.htm
- * /
+ */
  static char* skipwhite(char* s)
  {
 	while (isspace(*s)) {
@@ -41,7 +41,7 @@
  * Parser: http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/parse.html
  *
  * continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
- * /
+ */
 void commandParse (struct commandType* command)
 {
 	char* cmd = command.line;		// line read to be parsed into tokens
@@ -111,9 +111,9 @@ void commandParse (struct commandType* command)
 	// Set end of args list to NULL
 	command.args[n]=NULL;
 }
-*/
+/**/
 void main (void)
-{/*
+{
 	char input_line[MAX];
 	char* command_line = input_line;
 
@@ -129,7 +129,6 @@ void main (void)
 	for (i=0; i < size ; i++) {
 		printf("extracted arg is %s\n",command.args[i]);
 	}
-	*/
 	printf("\nHello World\n");
 
 }
