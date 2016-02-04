@@ -7,7 +7,7 @@
  * A basic command parser
  */
  
-//#include "commandParse.h"
+#include "commandParse.h"
 
 #include <ctype.h>
 #include <string.h>
