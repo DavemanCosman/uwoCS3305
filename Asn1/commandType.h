@@ -6,8 +6,8 @@
 // Simple structure to hold the command information
 struct commandType
 {
-	char* token;
-	char* args[10];
+	char* command;
+	char* tokens[10];
 	char* IOin;
 	char* IOout;
 	bool isFirstToken;
