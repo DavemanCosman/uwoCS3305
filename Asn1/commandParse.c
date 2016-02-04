@@ -42,7 +42,7 @@
  *
  * continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
  */
-void commandParse (struct commandType *command)
+void commandParse (struct commandType* command)
 {
 	char* cmd = (*command).line;		// line read to be parsed into tokens
 	bool nextIOin, nextIOout = false;	// for IO redirection
@@ -119,17 +119,14 @@ void main (void)
 
 	printf("DavidCosman> ");
 	fgets(input_line, LINE_MAX, stdin);
-	struct commandType command = {
+	struct commandType* command = {
 		.line = command_line
 	};
-	struct commandType* c = command;
-	commandParse (c);
+	commandParse (command);
 	
-	int size = (int) (sizeof(command.args) / sizeof(command.args[0]));
-	printf("number of args = %i\n", size);
 	int i;
-	for (i=0; i < size ; i++) {
-		printf("extracted arg is %s\n",command.args[i]);
+	while ((*command).args[i] != NULL) {
+		printf("extracted arg is %s\n",(*command).args[i]);
 	}
 	printf("\nHello World\n");
 
