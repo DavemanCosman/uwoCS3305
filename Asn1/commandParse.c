@@ -6,21 +6,24 @@
  * 
  * A basic command parser
  */
+#include "commandParse.h"
 
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "commandParse.h"
+
+#include "commandType.h"
 #include "constants.h"
 
 /*
  * Skip whitespaces, such as ' ' or escape chars '\n'
  * See: http://www.tutorialspoint.com/c_standard_library/c_function_isspace.htm
  */
- static char* skipwhite( char* s )
+ static char* skipwhite(char* s)
  {
-	while( isspace( *s ) ) ++s;
+	while (isspace(*s)) {
+		++s; }
 	return s;
  	
  }
@@ -31,29 +34,23 @@
  * See split() method
  *
  * commandType structure was created for ease of access and for built in commands.
+ * Structure idea taken from cornell.edu pseudo code;
+ * Shell: http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
+ * Parser: http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/parse.html
+ *
+ * continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
  */
 void commandParse (struct commandType* command)
 {
-	/* pseudo code
-	--
-	foreach cmd in cmdline {
-		if (cmd == command) {
-			parse_command(cmd, type)
-      }
-      */
-      
-	// pointer to the entire command in commandType, to be split into tokens
-	char* cmd = command.command;		// token being read
-	int token_count = 0;			// keeps track of number of tokens
+	char* cmd = command.line;		// line read to be parsed into tokens
 	bool nextIOin, nextIOout = false;	// for IO redirection
 
 	cmd = skipwhite(t, ' ');		// ignoring whitespaces
 	char* next = strchr( cmd, ' ' );	// to skip to the next command
+	int token_count = 0;			// keeps track of number of tokens, used for argument storage
 
 	while (next != NULL) {
 		next[0] = '\0';
-		// continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
-		
 		// When the next token is '>', then next token is outstream
 		if (strcmp(cmd, ">") == 0) {
 			nextIOout = true;
@@ -111,4 +108,23 @@ void commandParse (struct commandType* command)
 	
 	// Set end of args list to NULL
 	command.args[n]=NULL;
+}
+
+void main (void)
+{
+	char input_line[MAX];
+	char* command_line = input_line;
+
+	printf("DavidCosman> ");
+	fgets(input_line, MAX, stdin);
+	struct commandType command = { .line = command_line };
+	
+	commandParse (command);
+	
+	int size = sizeof(command.args) / sizeof(command.args[0]);
+	printf("number of args = %i\n", size);
+	int i;
+	for (i=0; i < size ; i++)
+		printf("extracted arg is %s\n",command.args[i]);
+
 }
