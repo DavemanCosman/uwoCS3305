@@ -119,9 +119,10 @@ void main (void)
 
 	printf("DavidCosman> ");
 	fgets(input_line, LINE_MAX, stdin);
-	struct commandType command, *c = &command;
-	
-	command = { .line = command_line };
+	struct commandType command = {
+		.line = command_line
+	};
+	struct commandType* c = command;
 	commandParse (c);
 	
 	int size = (int) (sizeof(command.args) / sizeof(command.args[0]));
