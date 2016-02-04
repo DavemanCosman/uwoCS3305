@@ -122,7 +122,7 @@ void main (void)
 	
 	commandParse (command);
 	
-	int size = sizeof(command.args) / sizeof(command.args[0]);
+	int size = (int) (sizeof(command.args) / sizeof(command.args[0]));
 	printf("number of args = %i\n", size);
 	int i;
 	for (i=0; i < size ; i++)
