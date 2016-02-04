@@ -5,6 +5,6 @@
 #include "commandType.h"
 
 // parse commandline for space separated commands
-void parse_tokens (char *buf, struct commandType* comm);
+void commandParse (struct commandType* command)
 
 #endif
