@@ -2,12 +2,13 @@
 #define commandType_h
 
 #include "bool.h"
+#include "constants.h"
 
 // Simple structure to hold the command information
 struct commandType
 {
 	char* command;
-	char* tokens[10];
+	char* tokens[CMD_MAX];
 	char* IOin;
 	char* IOout;
 	bool isFirstToken;
