@@ -23,6 +23,7 @@ void main (void)
 	int i = 0;
 	while (command.args[i] != NULL) {
 		printf("extracted arg is %s\n", command.args[i]);
+		i++;
 	}
 	printf("\nGoodbye World\n");
 
