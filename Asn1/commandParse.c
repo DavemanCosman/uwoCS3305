@@ -116,9 +116,9 @@ void print_tokens (struct commandType* command)
 {
 	if ((*command).line!=NULL) {
 		int i = 0;
-		while (command.args[i] != NULL) {
-		printf("extracted arg is %s\n", command.args[i]);
-		i++;
+		while ((*command).args[i] != NULL) {
+			printf("extracted arg is %s\n", (*command).args[i]);
+			i++;
 		}
 	}
 	else{
