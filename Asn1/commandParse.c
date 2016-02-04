@@ -124,7 +124,7 @@ void main (void)
 	};
 	commandParse (command);
 	
-	int i;
+	int i = 0;
 	while ((*command).args[i] != NULL) {
 		printf("extracted arg is %s\n",(*command).args[i]);
 	}
