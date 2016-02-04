@@ -121,4 +121,6 @@ void commandParse (struct commandType* command)
 	(*command).args[token_count] = NULL;
 }
 
-void print_tokens ()
+void print_tokens (){
+	// :P
+}
