@@ -60,6 +60,7 @@ void commandParse (struct commandType* command)
 		if (strcmp(cmd, ">") == 0) {
 			nextIOout = true;
 			cmd = skipwhite(next+1);
+			printf("IOout Encounter >\n");
 			next = strchr(cmd, ' ');
 			continue;
 		}
@@ -67,6 +68,7 @@ void commandParse (struct commandType* command)
 		if (strcmp(cmd, "<") == 0) {
 			nextIOin = true;
 			cmd = skipwhite(next+1);
+			printf("IOin Encounter <\n");
 			next = strchr(cmd, ' ');
 			continue;
 		}
@@ -118,3 +120,5 @@ void commandParse (struct commandType* command)
 	// Set end of args list to NULL
 	(*command).args[token_count] = NULL;
 }
+
+void print_tokens ()
