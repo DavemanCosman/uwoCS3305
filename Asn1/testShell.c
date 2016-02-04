@@ -16,10 +16,9 @@ void main (void)
 
 	printf("DavidCosman> ");
 	fgets(input_line, LINE_MAX, stdin);
-	struct commandType command = {
-		.line = command_line
-	};
-	commandParse (command);
+	struct commandType command;
+	command.line = command_line;
+	commandParse (&command);
 	
 	int i = 0;
 	while (command.args[i] != NULL) {
