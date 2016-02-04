@@ -18,8 +18,10 @@ void main (void)
 	fgets(input_line, LINE_MAX, stdin);
 	struct commandType command;
 	command.line = command_line;
-	commandParse (&command);
 	
+	commandParse (&command);
+	printf("Line after Parse: %s\n", command.line);
+
 	int i = 0;
 	while (command.args[i] != NULL) {
 		printf("extracted arg is %s\n", command.args[i]);
