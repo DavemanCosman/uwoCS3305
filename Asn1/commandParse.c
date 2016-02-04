@@ -15,15 +15,24 @@
 #include "constants.h"
 
 /*
- * Parse commandline for space separated commands
- *
- * Based on token parser example in CS 3305 by Hannan Lutfiya
- * This function was modified;
- * 	- The command structure was implemented to save space. comm.command is *buf
- * 	- tokens: This represents the array that the found tokens are put into. Localized.
- * 	- The function strtok() is used to find the tokens; the delimiter used to distinguish tokens is a space
+ * Skip whitespaces, such as ' ' or escape chars '\n'
+ * See: http://www.tutorialspoint.com/c_standard_library/c_function_isspace.htm
  */
-void parse_tokens(struct commandType* comm)
+ static char* skipwhite( char* s )
+ {
+	while( isspace( *s ) ) ++s;
+	return s;
+ 	
+ }
+ 
+/*
+ * Only the parser idea was taken from simple shell example here:
+ * https://gist.github.com/parse/966049
+ * See split() method
+ *
+ * commandType structure was created for ease of access and for built in commands.
+ */
+void commandParse (struct commandType* command)
 {
 	/* pseudo code
 	--
@@ -34,50 +43,72 @@ void parse_tokens(struct commandType* comm)
       */
       
 	// pointer to the entire command in commandType, to be split into tokens
-	char* line = comm.command;	// line being read
-	char tokens[];			// list of tokens
-	int i,n = 0;
-	bool nextIOin, nextIOout = false;
+	char* cmd = command.command;		// token being read
+	int token_count = 0;			// keeps track of number of tokens
+	bool nextIOin, nextIOout = false;	// for IO redirection
 
-	tokens[i] = strtok(line, " "); // pass tokens ignoring spaces
-	do {
-		i++;
-		line = NULL;
-		tokens[i] = strtok(line, " ");
+	cmd = skipwhite(t, ' ');		// ignoring whitespaces
+	char* next = strchr( cmd, ' ' );	// to skip to the next command
+
+	while (next != NULL) {
+		next[0] = '\0';
+		// continue: http://www.tutorialspoint.com/cprogramming/c_continue_statement.htm
 		
-		// If redirecting out, next token is instream
-		if (strcmp(tokens[i], ">") == 0) {
+		// When the next token is '>', then next token is outstream
+		if (strcmp(cmd, ">") == 0) {
 			nextIOout = true;
-			tokens[i] = strtok(line, " ");
+			cmd = skipwhite(next+1);
+			next = strtchr(cmd, ' ');
 			continue;
 		}
-		
-		// If redirect in, next token is outstream
-		if (strcmp(tokens[i], "<") == 0) {
+		// When the next token is '<', then next token is outstream
+		if (strcmp(cmd, "<") == 0) {
 			nextIOin = true;
-			tokens[i] = strtok(line, " ");
+			cmd = skipwhite(next+1);
+			next = strtchr(cmd, ' ');
 			continue;
 		}
 		
-		if (nextIOout == true)
-		{
-			comm.IOout = tokens[i];
+		// Sets internal commandType io values and resets bools
+		if (nextIOout == true) {
+			command.IOout = cmd;
 			nextIOout = false;
 		}
-		else if (nextIOin == true)
-		{
-			comm.IOin = tokens[i];
+		else if (nextIOin == true) {
+			command.IOin = cmd;
 			nextIOin = false;
 		}
-		else
-		{
-			comm.args[n] = tokens[i];
-			++n;
+		// Adds the token to the list of args otherwise
+		else {
+			command.args[n] = cmd;
+			++token_count;
+		}
+		cmd = skipwhite(next+1);
+		next = strchr(token, ' ');
+	}
+	
+	// If last argument, interpret it
+	if (cmd[0] != '\0')
+		// Sets internal commandType io values and resets bools
+		if (nextIOout == true) {
+			command.IOout = cmd;
+			nextIOout = false;
+		}
+		else if (nextIOin == true) {
+			command.IOin = cmd;
+			nextIOin = false;
+		}
+		// Adds the token to the list of args otherwise
+		else {
+			command.args[n] = cmd;
+			++token_count;
 		}
 		
-		tokens[i] = strtok(line, " ");
-	} while(tokens[i] != NULL);
+		next = strchr(cmd,'\n');
+		next[0] = '\0';
+		++token_count;
+	}
 	
-	// indicate end of args list
-	comm.args[n]=NULL;
+	// Set end of args list to NULL
+	command.args[n]=NULL;
 }
