@@ -9,6 +9,7 @@ struct commandType
 {
 	char* command;
 	char* tokens[CMD_MAX];
+	char* args[CMD_MAX];
 	char* IOin;
 	char* IOout;
 	bool isFirstToken;
