@@ -10,6 +10,7 @@ struct commandType
 	char* args[CMD_MAX];
 	char* IOin;
 	char* IOout;
+	int* n;
 };
 
 #endif
