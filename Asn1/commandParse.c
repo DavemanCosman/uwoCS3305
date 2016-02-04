@@ -76,12 +76,12 @@ void commandParse (struct commandType* command)
 		// Sets internal commandType io values and resets bools
 		if (nextIOout == true) {
 			(*command).IOout = cmd;
-			printf("IOout char set: %s\n", (*command).IOout);
+			printf("Last, IOout char set: %s\n", (*command).IOout);
 			nextIOout = false;
 		}
 		else if (nextIOin == true) {
 			(*command).IOin = cmd;
-			printf("IOin char set: %s\n", (*command).IOin);
+			printf("Last, IOin char set: %s\n", (*command).IOin);
 			nextIOin = false;
 		}
 		// Adds the token to the list of args otherwise
