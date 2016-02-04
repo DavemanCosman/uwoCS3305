@@ -2,43 +2,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#inclue <ctype.h>
+#include <ctype.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-#define MAX 256
-#define CMD_MAX 10
+#include "command.h"
+#include "constants.h"
 
 typedef void (*sighandler_t)(int);
-char c = '\0';
 
-/*
-   This function takes as input the following:
-   	buf: This represents the string for which the tokens are to be determined for.
-   	tokens: This represents the array that the found tokens are tbe put into.
-
-   The function strtok() is used to find the tokens.  The delimiter used to distinguish 
-   tokens is a space.
-*/
-
-int make_tokenlist(char *buf, char *tokens[])
-{
-
- char input_line[MAX];
- char *line;
- int i,n;
-
- i = 0;
-
- line = buf;
- tokens[i] = strtok(line, " ");
- do  {
-    i++;
-    line = NULL;
-    tokens[i] = strtok(line, " ");
- } while(tokens[i] != NULL);
-
- return i;
-}
+// Array will hold arguments
+static char* args[MAX_CMD];
 
 void handle_signal(int signo)
 {
@@ -53,9 +28,9 @@ void fill_argv(char *tmp_argv)
 	char ret[100];
 }
 
-int main(int argc, char *argv[], char *envp[])
+int main(int argc, char const *argv[])
 {
-	char input_line[MAX], *tokens[CMD_MAX];
+	char input_line[MAX];
 	int i, n;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, handle_signal);
