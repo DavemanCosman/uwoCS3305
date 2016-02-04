@@ -112,7 +112,7 @@ void commandParse (struct commandType* command)
 }
 
 void main (void)
-{
+{/*
 	char input_line[MAX];
 	char* command_line = input_line;
 
@@ -125,7 +125,10 @@ void main (void)
 	int size = (int) (sizeof(command.args) / sizeof(command.args[0]));
 	printf("number of args = %i\n", size);
 	int i;
-	for (i=0; i < size ; i++)
+	for (i=0; i < size ; i++) {
 		printf("extracted arg is %s\n",command.args[i]);
+	}
+	*/
+	printf("\nHello World\n");
 
 }
