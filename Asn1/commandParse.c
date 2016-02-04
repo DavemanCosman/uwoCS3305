@@ -44,7 +44,7 @@
  */
 void commandParse (struct commandType* command)
 {
-	char* cmd = command.line;		// line read to be parsed into tokens
+	char* cmd = (*command).line;		// line read to be parsed into tokens
 	bool nextIOin, nextIOout = false;	// for IO redirection
 
 	cmd = skipwhite(t, ' ');		// ignoring whitespaces
@@ -70,16 +70,16 @@ void commandParse (struct commandType* command)
 		
 		// Sets internal commandType io values and resets bools
 		if (nextIOout == true) {
-			command.IOout = cmd;
+			(*command).IOout = cmd;
 			nextIOout = false;
 		}
 		else if (nextIOin == true) {
-			command.IOin = cmd;
+			(*command).IOin = cmd;
 			nextIOin = false;
 		}
 		// Adds the token to the list of args otherwise
 		else {
-			command.args[n] = cmd;
+			(*command).args[n] = cmd;
 			++token_count;
 		}
 		cmd = skipwhite(next+1);
@@ -90,16 +90,16 @@ void commandParse (struct commandType* command)
 	if (cmd[0] != '\0')
 		// Sets internal commandType io values and resets bools
 		if (nextIOout == true) {
-			command.IOout = cmd;
+			(*command).IOout = cmd;
 			nextIOout = false;
 		}
 		else if (nextIOin == true) {
-			command.IOin = cmd;
+			(*command).IOin = cmd;
 			nextIOin = false;
 		}
 		// Adds the token to the list of args otherwise
 		else {
-			command.args[n] = cmd;
+			(*command).args[n] = cmd;
 			++token_count;
 		}
 		
@@ -109,17 +109,17 @@ void commandParse (struct commandType* command)
 	}
 	
 	// Set end of args list to NULL
-	command.args[n]=NULL;
+	(*command).args[n]=NULL;
 }
 /**/
 void main (void)
 {
-	char input_line[MAX];
+	char input_line[LINE_MAX];
 	char* command_line = input_line;
 
 	printf("DavidCosman> ");
 	fgets(input_line, MAX, stdin);
-	struct commandType command = { .line = command_line };
+	struct commandType* command = { .line = command_line };
 	
 	commandParse (command);
 	
