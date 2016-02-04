@@ -7,4 +7,7 @@
 // parse commandline for space separated commands
 void commandParse (struct commandType* command);
 
+// used for testing to print tokens
+void print_tokens (struct commandType* command)
+
 #endif
