@@ -10,6 +10,7 @@
 
 void main (void)
 {
+	printf("\nGoodbye World\n");
 	char input_line[LINE_MAX];
 	char* command_line = input_line;
 
@@ -21,9 +22,9 @@ void main (void)
 	commandParse (command);
 	
 	int i = 0;
-	while ((*command).args[i] != NULL) {
-		printf("extracted arg is %s\n",(*command).args[i]);
+	while (command.args[i] != NULL) {
+		printf("extracted arg is %s\n", command.args[i]);
 	}
-	printf("\nHello World\n");
+	printf("\nGoodbye World\n");
 
 }
