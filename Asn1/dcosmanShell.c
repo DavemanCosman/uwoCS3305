@@ -55,13 +55,13 @@ int main(int argc, char const *argv[])
 		// To do: read pipe | delimeters here and separate by them
 		
 		// execute commands here and include the bottom part (?)
-		&command.line = &input_line;
+		command.line = &input_line;
 		commandParse (&command);
 		
 		// execute commands here (?)
 		
 		addToQueue(history, history_item);
-		printf("%s\n", (char) displayQueueFront(history));
+		printf("%s\n", displayQueueFront(history));
 	}
 	printf("\n");
 	// clean up here
