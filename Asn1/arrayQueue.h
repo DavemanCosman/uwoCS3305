@@ -15,7 +15,7 @@ struct arrayQueue
 	int max_capacity;
 	// The array of elements in the queue
 	const void** queue_elements;
-}
+};
 
 typedef struct arrayQueue Queue;
 
