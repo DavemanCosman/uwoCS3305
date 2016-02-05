@@ -60,7 +60,7 @@ const void* displayQueueFront (Queue* queue)
 
 void free_Queue (Queue** queue)
 {
-	free((*queue)->elements );
+	free((*queue)->queue_elements );
 	free(*queue);
 }
 
