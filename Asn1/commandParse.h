@@ -8,6 +8,6 @@
 void commandParse (struct commandType* command);
 
 // used for testing to print tokens
-void print_tokens (struct commandType* command)
+void print_tokens (struct commandType* command);
 
 #endif
