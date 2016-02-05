@@ -13,6 +13,8 @@ struct arrayQueue
 	int front = - 1;
 	// The current size
 	int size;
+	// Max size of the queue
+	int max_capacity;
 	// The array of elements in the queue
 	const void** queue_array_elements;
 }
