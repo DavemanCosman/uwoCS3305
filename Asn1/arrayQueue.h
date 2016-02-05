@@ -8,9 +8,9 @@
  */
 struct arrayQueue
 {
-	// rear and front node indexes
-	int rear = -1; // Rear also represents the current size. -1 if empty
-	int front = -1;
+	// rear and front node indexes. -1 if empty
+	int rear; // Rear also represents the current size. 
+	int front;
 	// Max size of the queue
 	int max_capacity;
 	// The array of elements in the queue
