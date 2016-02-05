@@ -12,9 +12,9 @@
  */
 struct arrayList 
 {
-    int capacity;
-    int size;
-    const void** elements
+    int capacity;           // By default, 10 history items
+    int size;               // Current size of the list
+    const void** elements   // the history elements that will be added
 };
 
 typedef struct arrayList ArrayList;
@@ -25,11 +25,11 @@ void arrayList_init (ArrayList** list, int capacity, size_t elementSize);
 // adds node to back of list
 void arrayListAdd (ArrayList* list, const void* node);
 
-// deletes item at index i
-void arrayListDelete (List* list, int i);
+// deletes item at index
+void arrayListDelete (List* list, int index);
 
-// returns item at index i
-const void* getArrayListat (List* list, int i);
+// returns item at index
+const void* getArrayListAt (List* list, int index);
 
 // frees memory used by array list
 void arrayListFree( List** list );
