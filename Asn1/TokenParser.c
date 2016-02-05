@@ -32,7 +32,6 @@ int make_tokenlist(char *buf, char *tokens[])
  tokens[i] = strtok(line, " ");
  do  {
     i++;
-    line = NULL;
     tokens[i] = strtok(line, " ");
  } while(tokens[i] != NULL);
 
