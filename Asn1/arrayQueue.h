@@ -29,12 +29,12 @@ void addToQueue (Queue* queue, const void* node);
 void removeFromQueue (Queue* queue);
 
 // returns the front element in the queue
-const void* displayQueueFront (Queue* list);
+const void* displayQueueFront (Queue* queue);
 
 // frees memory used by array queue
-void free_Queue(Queue** list);
+void free_Queue(Queue** queue);
 
 // frees all elements in array queue
-void free_QueueElements(Queue* list);
+void free_QueueElements(Queue* queue);
 
 #endif
