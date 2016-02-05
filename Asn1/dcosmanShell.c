@@ -11,6 +11,9 @@
 #include "constants.h"
 #include "commandParse.h"
 #include "bool.h"
+#include "arrayQueue.h"
+
+static Queue* history;
 
 typedef void (*sighandler_t)(int);
 
@@ -30,9 +33,7 @@ void fill_argv(char *tmp_argv)
 int main(int argc, char const *argv[])
 {
 	char input_line[LINE_MAX];
-	char* command_line = input_line;
-	
-	// initalize history here
+	init_queue (&history, MAX_HISTORY , sizeof(char) * LINE_MAX);
 	struct commandType command;
 
 	printf("/****************************************/ \n");
@@ -45,11 +46,22 @@ int main(int argc, char const *argv[])
 		printf("\nDavidCosman> ");
 		
 		// Read command and give to history
-		fgets(input_line, LINE_MAX, stdin);
-		// put history item here
+		fgets(input_line, sizeof(line) / sizeof(char), stdin);
 		
-		command.line = command_line;
+		// put history item here
+		char* history_item = malloc(sizeof(char)*LINE_MAX);
+		memcpy(history_item,command,sizeof(char)*LINE_MAX);
+		
+		// To do: read pipe | delimeters here and separate by them
+		
+		// execute commands here and include the bottom part (?)
+		command.line = &input_line;
 		commandParse (&command);
+		
+		// execute commands here (?)
+		
+		addToQueue(history, history_item);
+		printf("%s\n", displayQueueFront(queue));
 	}
 	printf("\n");
 	// clean up here
