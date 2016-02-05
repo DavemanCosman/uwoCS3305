@@ -46,11 +46,11 @@ int main(int argc, char const *argv[])
 		printf("\nDavidCosman> ");
 		
 		// Read command and give to history
-		fgets(input_line, sizeof(line) / sizeof(char), stdin);
+		fgets(input_line, sizeof(input_line) / sizeof(char), stdin);
 		
 		// put history item here
 		char* history_item = malloc(sizeof(char)*LINE_MAX);
-		memcpy(history_item,command,sizeof(char)*LINE_MAX);
+		memcpy(history_item,input_line,sizeof(char)*LINE_MAX);
 		
 		// To do: read pipe | delimeters here and separate by them
 		
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
 		// execute commands here (?)
 		
 		addToQueue(history, history_item);
-		printf("%s\n", displayQueueFront(queue));
+		printf("%s\n", displayQueueFront(history));
 	}
 	printf("\n");
 	// clean up here
