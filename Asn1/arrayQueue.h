@@ -28,8 +28,8 @@ void addToQueue (Queue* queue, const void* node);
 // deletes front item from queue
 void removeFromQueue (Queue* queue);
 
-// returns the queue array of elements
-const void* displayQueue (Queue* list);
+// returns the front element in the queue
+const void* displayQueueFront (Queue* list);
 
 // frees memory used by array queue
 void free_Queue(Queue** list);
