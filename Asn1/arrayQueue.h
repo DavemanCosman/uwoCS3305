@@ -31,6 +31,9 @@ void removeFromQueue (Queue* queue);
 // returns the front element in the queue
 const void* displayQueueFront (Queue* queue);
 
+// prints Queue (history)
+void printQueue(Queue* queue);
+
 // frees memory used by array queue
 void free_Queue(Queue** queue);
 
