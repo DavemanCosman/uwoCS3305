@@ -2,7 +2,7 @@
 #define commandhistory_h
 
 // Initialize command history memory storage
-void commandhistoryInit();
+void commandHistoryInit();
 
 // Create space and copy command in history memory
 char* commandToHistory(char* command);
