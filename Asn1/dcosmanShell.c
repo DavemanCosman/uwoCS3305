@@ -61,6 +61,7 @@ int main(int argc, char const *argv[])
 		// execute commands here (?)
 		
 		addToQueue(history, history_item);
+		printf("%s\n", displayQueueFront(queue));
 	}
 	printf("\n");
 	// clean up here
