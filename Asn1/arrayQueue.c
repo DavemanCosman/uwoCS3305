@@ -7,6 +7,7 @@
 void init_queue (Queue** queue, int capacity, size_t elementSize)
 {
 	Queue* new_queue = malloc(sizeof(Queue));
+	(*new_queue).rear = (*new_queue).front = -1;
 	(*new_queue).queue_elements = malloc(capacity * elementSize);
 	(*new_queue).max_capacity = capacity;
 	*queue = new_queue;
