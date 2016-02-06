@@ -7,6 +7,7 @@
 
 #include "arrayQueue.h"
 #include "constants.h"
+#include "bool.h"
 
 static Queue* history;
 
@@ -35,9 +36,9 @@ void print_commandhistory ()
 	else {
 		int history_count = MAX_HISTORY;
 		char* output;
-		// if there are less than 10 elements in history, decrease the history_count
-		if ( ((*history).front + (*history).rear) < history_count - 1 ) {
-			history_count = ((*history).front + 1 + (*history).rear);
+		// if there are less than max elements in history, decrease the history_count
+		if ((*history).size == false ) {
+			history_count = (*history).rear;
 		}
 	
 		// if there is only one element in history, then front == rear (both 0)
