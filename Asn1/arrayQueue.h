@@ -2,6 +2,7 @@
 #define queueList_h
 
 #include <stddef.h>
+#include "bool.h"
 
 /* arrayQueue
  * Implement a circular queue using an array
@@ -15,6 +16,8 @@ struct arrayQueue
 	int max_capacity;
 	// The array of elements in the queue
 	const void** queue_elements;
+	// to determine if size has already passed max
+	bool size;
 };
 
 typedef struct arrayQueue Queue;
