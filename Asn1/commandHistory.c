@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#inclue <syslog.h>
+#include <syslog.h>
 
 #include "arrayQueue.h"
 #include "constants.h"
