@@ -31,7 +31,7 @@ void fill_argv(char *tmp_argv)
 int main(int argc, char const *argv[])
 {
 	char input_line[LINE_MAX];
-	init_commandhistory();
+	init_commandHistory();
 	struct commandType command;
 
 	printf("/****************************************/ \n");
