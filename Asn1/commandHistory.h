@@ -1,19 +1,19 @@
-#ifndef commandhistory_h
-#define commandhistory_h
+#ifndef commandHistory_h
+#define commandHistory_h
 
 // Initialize command history memory storage
-void commandHistory_init();
+void init_commandHistory();
 
 // Create space and copy command in history memory
-char* commandToHistory(char* command);
+char* create_commandhistory_entry(char* command);
 
 // Add command to commandHistory
-void historyAdd(char* history_item);
+void add_commandhistory_entry(char* history_item);
 
 // Print last 10 (or less) history commands (if any)
-void historyPrintLast(int count);
+void print_commandhistory();
 
 // Free up memory taken by history
-void historyFree();
+void free_history();
 
 #endif
