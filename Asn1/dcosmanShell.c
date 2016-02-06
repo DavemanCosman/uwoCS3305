@@ -13,8 +13,6 @@
 #include "commandParse.h"
 #include "bool.h"
 
-static Queue* history;
-
 typedef void (*sighandler_t)(int);
 
 void handle_signal(int signo)
@@ -53,20 +51,21 @@ int main(int argc, char const *argv[])
 		
 		int input_stream = 0;			// store input stream here
 		char* cmd = input_line;			// get command from input line
-		char* nextPipe = strchr (com, '|');	// go to next pipe
+		char* nextPipe = strchr (cmd, '|');	// go to next pipe
 		
 		while ( nextPipe != NULL) {
 			*nextPipe = '\0';
-			command = { .line = cmd };
+			command.line = cmd;
 			// execute commands here and include the bottom part (?)
-			command.line = &input_line;
 			commandParse (&command);
-			
-			// execute commands here (?)
+			print_tokens (&command);
 		}
 		
 		// Run last command
-		command = { .line = cmd };
+		command.line = cmd;
+		// execute command here and include the bottom part (?)
+		commandParse (&command);
+		print_tokens (&command);
 		
 		add_commandhistory_entry (history_entry);
 		printf("\ncommand history:\n");
