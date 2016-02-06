@@ -38,7 +38,7 @@ void print_commandhistory ()
 		char* output;
 		// if there are less than max elements in history, decrease the history_count
 		if ((*history).size == false ) {
-			history_count = (*history).rear;
+			history_count = (*history).rear + 1;
 		}
 	
 		// if there is only one element in history, then front == rear (both 0)
