@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "bool.h"
 
-// Simple structure to hold the command information
+// commandType type: holds relevant command information.
 struct commandType
 {
 	char* line;
