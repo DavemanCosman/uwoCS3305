@@ -36,7 +36,7 @@ void print_commandhistory ()
 		int history_count = MAX_HISTORY;
 		char* output;
 		// if there are less than 10 elements in history, decrease the history_count
-		if ( ((*history).front + (*history).rear) < history_count ) {
+		if ( ((*history).front + (*history).rear) < history_count - 1 ) {
 			history_count = ((*history).front + 1 + (*history).rear);
 		}
 	
