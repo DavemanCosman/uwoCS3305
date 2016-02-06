@@ -23,7 +23,7 @@ void addToQueue (Queue* queue, const void* node)
 		printf("arrayQueue.c Queue has reached max capacity\n");
 	}
 		// If there are, remove the front from the queue
-	if ((*queue.).size == true) {
+	if ((*queue).size == true) {
 		removeFromQueue(queue);
 	}
 	// If queue is initially empty, set index of first element to 0 in array queue
