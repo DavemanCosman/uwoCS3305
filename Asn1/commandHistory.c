@@ -43,13 +43,13 @@ void print_commandhistory ()
 		// if there is only one element in history, then front == rear (both 0)
 		if ((*history).front == (*history).rear) {
 			output = (char*) displayQueueFront(history);
-			printf("%s\n",output);
+			printf("%s",output);
 		}
 		else {
 			int i;
 			for  (i = 0 ; i < history_count ; ++i) {
 				output = (char*) displayQueueFront(history);
-				printf("%s\n",output);
+				printf("%s",output);
 				(*history).front = (*history).front + 1;
 				// Reset front pointer if it goes out of bounds
 				if ((*history).front > history_count - 1) {
