@@ -35,7 +35,8 @@ void print_commandhistory ()
 	else {
 		int history_count = MAX_HISTORY;
 		char* output;
-		
+		printf("History front is %d\n",(*history).front);
+		printf("History rear is %d\n",(*history).rear);
 		// if there are less than 10 elements in history, decrease the history_count
 		if ( ((*history).front + (*history).rear) < history_count ) {
 			history_count = ((*history).front + (*history).rear);
