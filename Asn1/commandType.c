@@ -3,85 +3,85 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <syslog.h>
 
-#include "parser.h"
-#include "history.h"
-#include "executor.h"
+#include "commandParse.h"
+#include "commandHistory.h"
+#include "commandExecutor.h"
 #include "constants.h"
 
-static int num_forks = 0;
+static int fork_count = 0;
  
-static void wait_for_forks()
+static void wait_on_forks()
 {
 	int i;
-	for ( i = 0; i < num_forks; ++i) wait( NULL ); 
+	for (i = 0 ; i < fork_count ; ++i) { 
+		wait (NULL);
+	}
 }
 
-static int run_command( struct command_t* command, int input_fd )
+static int runCommand ( struct commandType* command, int input_fd )
 {
-	++num_forks;
+	++fork_count;
 
 	int pipes[2];
-	pipe( pipes );	
+	pipe(pipes);	
 
 	pid_t pid = fork();
 	// if child process
-	if ( pid == 0 ) {
-		execute_command( command, pipes, input_fd );
+	if (pid == 0) {
+		execute_command (command, pipes, input_fd);
 	}
  
 	// Close all open writeable streams
-	close( pipes[PIPE_WRITE] );
+	close(pipes[WRITE]);
 	if ( input_fd != 0 ) close( input_fd );
  
 	// If it's the last command
-	if( command->isLastCommand == true ) 
+	if((*command).isLastCommand == true ) 
 	{
-		close( pipes[PIPE_READ] );
-		wait_for_forks();
+		close(pipes[READ]);
+		wait_on_forks();
 	}
  
-	return pipes[PIPE_READ];
+	return pipes[READ];
 }
 
-static inline void internal_command_exit( struct command_t* command )
+static inline void exitCommand( struct commandType* command )
 {
-	int exit_code = 0;
+	int userExit = 0;
 	
-	// Grab the exit code, if provided
-	if( command->args[1] != NULL )
-	{
-		exit_code = atoi( command->args[1] );
+	// Grab the userExit command, if provided
+	if((*command).args[1] != NULL ) {
+		printf("error: exit does not support any extra arguments");
 	}
 
-	exit( exit_code );	
+	exit(userExit);	
 }
 
-static inline void internal_command_history( struct command_t* command )
+static inline void historyCommand( struct commandType* command )
 {
-	if( command->args[1] != NULL )
-	{
-		print_history( atoi( command->args[1] ) );
+	if((*command).args[1] != NULL ) {
+		printf("error: history does not support any extra arguments");
 	}
-	else
-	{
-		print_history( 0 );
+	else {
+		print_commandhistory();
 	}
 }
 
-static bool handle_internal_command( struct command_t* command )
+static bool handle_internal_command( struct commandType* command )
 {
 	// exit
-	if (strcmp( command->args[0], "exit" ) == 0 ) 
+	if (strcmp((*command).args[0], "exit" ) == 0) 
 	{
-		internal_command_exit( command );
+		exitCommand(command);
 		return true;
 	}
 
 	// history
-	if (strcmp( command->args[0], "history" ) == 0 ) 
+	if (strcmp((*command).args[0], "history" ) == 0 ) 
 	{
-		internal_command_history( command );
+		historyCommand(command);
 		return true;
 	}
 
@@ -89,7 +89,7 @@ static bool handle_internal_command( struct command_t* command )
 	return false;
 }
 
-int run( struct command_t* command, int input )
+int run( struct commandType* command, int input )
 {
 	parse_command( command );
 
@@ -97,7 +97,7 @@ int run( struct command_t* command, int input )
 	{
 		if( !handle_internal_command( command ) )
 		{
-			return run_command( command, input );			
+			return runCommand( command, input );			
 		}
 	}
 	return 0;
