@@ -7,11 +7,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "commandHistory.h"
 #include "commandType.h"
 #include "constants.h"
 #include "commandParse.h"
 #include "bool.h"
-#include "arrayQueue.h"
 
 static Queue* history;
 
@@ -33,7 +33,7 @@ void fill_argv(char *tmp_argv)
 int main(int argc, char const *argv[])
 {
 	char input_line[LINE_MAX];
-	init_queue (&history, MAX_HISTORY , sizeof(char) * LINE_MAX);
+	init_commandhistory();
 	struct commandType command;
 
 	printf("/****************************************/ \n");
@@ -49,19 +49,28 @@ int main(int argc, char const *argv[])
 		fgets(input_line, sizeof(input_line) / sizeof(char), stdin);
 		
 		// put history item here
-		char* history_item = malloc(sizeof(char)*LINE_MAX);
-		memcpy(history_item,input_line,sizeof(char)*LINE_MAX);
+		char* history_entry = create_commandhistory_entry(input_line);
 		
-		// To do: read pipe | delimeters here and separate by them
+		int input_stream = 0;			// store input stream here
+		char* cmd = input_line;			// get command from input line
+		char* nextPipe = strchr (com, '|');	// go to next pipe
 		
-		// execute commands here and include the bottom part (?)
-		command.line = &input_line;
-		commandParse (&command);
+		while ( nextPipe != NULL) {
+			*nextPipe = '\0';
+			command = { .line = cmd };
+			// execute commands here and include the bottom part (?)
+			command.line = &input_line;
+			commandParse (&command);
+			
+			// execute commands here (?)
+		}
 		
-		// execute commands here (?)
+		// Run last command
+		command = { .line = cmd };
 		
-		addToQueue(history, history_item);
-		printf("%s\n", displayQueueFront(history));
+		add_commandhistory_entry (history_entry);
+		printf("\ncommand history:\n");
+		print_commandhistory();
 	}
 	printf("\n");
 	// clean up here
