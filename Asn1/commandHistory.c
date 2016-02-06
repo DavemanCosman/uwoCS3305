@@ -10,7 +10,7 @@
 
 static Queue* history;
 
-void init_history()
+void init_commandHistory()
 {
 	init_queue (&history, MAX_HISTORY, sizeof(char) * LINE_MAX );
 }
