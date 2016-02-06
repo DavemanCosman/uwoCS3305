@@ -32,7 +32,7 @@ void addToQueue (Queue* queue, const void* node)
 	}
 	(*queue).rear = (*queue).rear + 1;
 	printf("arrayQueue.c front index: %d\n",(*queue).front);
-	printf("arrayQueue.c rear index: %d\n",(*queue).front);
+	printf("arrayQueue.c rear index: %d\n",(*queue).rear);
 	(*queue).queue_elements[(*queue).rear] = node;
 }
 
