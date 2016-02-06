@@ -1,4 +1,5 @@
 #include "arrayQueue.h"
+#include "bool.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,14 +11,19 @@ void init_queue (Queue** queue, int capacity, size_t elementSize)
 	(*new_queue).rear = (*new_queue).front = -1;
 	(*new_queue).queue_elements = malloc(capacity * elementSize);
 	(*new_queue).max_capacity = capacity;
+	(*new_queue).size = false;
 	*queue = new_queue;
 }
 
 void addToQueue (Queue* queue, const void* node)
 {
-	// Check if there are already 10 items.
+	// Check if there are already max capacity items.
 	if ( ((*queue).front + (*queue).rear) == ((*queue).max_capacity - 1) ) {
+		(*queue).size = true;
+		printf("arrayQueue.c Queue has reached max capacity\n");
+	}
 		// If there are, remove the front from the queue
+	if ((*queue.).size == true) {
 		removeFromQueue(queue);
 	}
 	// If queue is initially empty, set index of first element to 0 in array queue
@@ -25,12 +31,14 @@ void addToQueue (Queue* queue, const void* node)
 		(*queue).front = 0;
 	}
 	(*queue).rear = (*queue).rear + 1;
+	printf("arrayQueue.c front index: %d\n",(*queue).front);
+	printf("arrayQueue.c rear index: %d\n",(*queue).front);
 	(*queue).queue_elements[(*queue).rear] = node;
 }
 
 void removeFromQueue (Queue* queue) 
 {
-	if ((*queue).front == -1 || (*queue).front > (*queue).rear) {
+	if ((*queue).front == -1) {
 		printf("Fatal error: Queue underflow\n");
 		return;
 	}
@@ -43,7 +51,7 @@ void removeFromQueue (Queue* queue)
 		(*queue).front = (*queue).front + 1;
 		// if it comes full circle on queue:
 		if ((*queue).front > (*queue).max_capacity - 1) {
-			(*queue).front = (*queue).rear;
+			(*queue).front = 0;
 		}
 	}
 }
