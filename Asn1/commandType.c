@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "commandParse.h"
 #include "commandHistory.h"
@@ -12,7 +11,7 @@
 
 static int fork_count = 0;
  
-static void wait_on_forks()
+static void forkWait()
 {
 	int i;
 	for (i = 0 ; i < fork_count ; ++i) { 
@@ -20,7 +19,7 @@ static void wait_on_forks()
 	}
 }
 
-static int runCommand ( struct commandType* command, int input_fd )
+static int runCommand (struct commandType* command, int input_fd)
 {
 	++fork_count;
 	int pipes[2];
@@ -35,13 +34,13 @@ static int runCommand ( struct commandType* command, int input_fd )
  
 	// Close all open writeable streams
 	close(pipes[WRITE]);
-	if ( input_fd != 0 ) close( input_fd );
+	if (input_fd != 0) close(input_fd);
  
 	// If it's the last command
 	if((*command).isLastCommand == true ) 
 	{
 		close(pipes[READ]);
-		wait_on_forks();
+		forkWait();
 	}
  
 	return pipes[READ];
