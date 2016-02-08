@@ -1,3 +1,12 @@
+/**
+ * commandType.c
+ * 
+ * David Cosman, Feb 6th 2015
+ * UWO CS 3305
+ * 
+ * Does everything necessary for the shell to execute and run commands
+ */
+ 
 #include "commandType.h"
 
 #include <stdio.h>
