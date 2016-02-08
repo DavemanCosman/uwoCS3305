@@ -26,14 +26,14 @@ void execute_command( struct commandType* command, int* pipes, int input_fd )
 	}
 
 	// stdin is redirected
-	if( (*command).redirect_in ) {
-		file_in = fopen((*command).redirect_in, "r");
+	if( (*command).IOin ) {
+		file_in = fopen((*command).IOin, "r");
 		dup2(fileno(file_in), STDIN_FILENO );
 	}
 	
 	// stdout is redirected
-	if((*command).redirect_out) {
-		file_out = fopen((*command).redirect_out, "w+" );
+	if((*command).IOout) {
+		file_out = fopen((*command).IOout, "w+" );
 		dup2(fileno(file_out), STDOUT_FILENO);
 	}
 
