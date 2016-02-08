@@ -37,8 +37,7 @@ static int runCommand (struct commandType* command, int input_fd)
 	if (input_fd != 0) close(input_fd);
  
 	// If it's the last command
-	if((*command).isLastCommand == true ) 
-	{
+	if((*command).lastCommand == true ) {
 		close(pipes[READ]);
 		forkWait();
 	}
@@ -52,7 +51,7 @@ static inline void exitCommand( struct commandType* command )
 	
 	// Grab the userExit command, if provided
 	if((*command).args[1] != NULL ) {
-		printf("error: exit does not support any extra arguments");
+		printf("error: exit does not support any extra arguments\n");
 	}
 
 	exit(userExit);	
@@ -61,7 +60,7 @@ static inline void exitCommand( struct commandType* command )
 static inline void historyCommand( struct commandType* command )
 {
 	if((*command).args[1] != NULL ) {
-		printf("error: history does not support any extra arguments");
+		printf("error: history does not support any extra arguments\n");
 	}
 	else {
 		print_commandhistory();
