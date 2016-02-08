@@ -4,7 +4,7 @@
  * David Cosman, Feb 3rd 2015
  * UWO CS 3305
  * 
- * A basic command parser
+ * Used for parsing commands into tokens. Commands are handled in CommandType.h
  */
  
 #include "commandParse.h"
