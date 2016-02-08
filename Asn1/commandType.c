@@ -9,8 +9,8 @@
 #include "commandExecute.h"
 #include "constants.h"
 
-static int fork_count = 0;
- 
+static int fork_count = 0; // keep count of forks using a local variable to commandType.c
+// Method to tell the system to wait on current processes
 static void forkWait()
 {
 	int i;
@@ -21,20 +21,23 @@ static void forkWait()
 
 static int runCommand (struct commandType* command, int input_fd)
 {
-	++fork_count;
+	// Pipe methods;
 	int pipes[2];
-	pipe(pipes);	
-
+	pipe(pipes);
+	// increase the fork counter, fork assign pid
+	++fork_count;
 	pid_t pid = fork();
+	
 	// if child process
 	if (pid == 0) { 
-		//execute command here
-		execute_command (command, pipes, input_fd);
+		executeCommand (command, pipes, input_fd);
 	}
  
-	// Close all open writeable streams
+	// Close open writeable input streams
 	close(pipes[WRITE]);
-	if (input_fd != 0) close(input_fd);
+	if (input_fd != 0) {
+		close(input_fd);
+	}
  
 	// If it's the last command
 	if((*command).lastCommand == true ) {
@@ -47,11 +50,12 @@ static int runCommand (struct commandType* command, int input_fd)
 
 static inline void exitCommand( struct commandType* command )
 {
+	// Code for exit
 	int userExit = 0;
 	
 	// Grab the userExit command, if provided
 	if((*command).args[1] != NULL ) {
-		printf("error: exit does not support any extra arguments\n");
+		userExit = -1;
 	}
 
 	exit(userExit);	
@@ -60,22 +64,22 @@ static inline void exitCommand( struct commandType* command )
 static inline void historyCommand( struct commandType* command )
 {
 	if((*command).args[1] != NULL ) {
-		printf("error: history does not support any extra arguments\n");
+		syslog (LOG_INFO, "Error: this history does not support arguments\n");
 	}
 	else {
-		print_commandhistory();
+		print_commandHistory();
 	}
 }
 
-static bool handle_internal_command( struct commandType* command )
+static bool internalCommandHandler( struct commandType* command )
 {
-	// exit
+	// exit command
 	if (strcmp((*command).args[0], "exit" ) == 0) {
 		exitCommand(command);
 		return true;
 	}
 
-	// history
+	// history command
 	if (strcmp((*command).args[0], "history" ) == 0) {
 		historyCommand(command);
 		return true;
@@ -85,11 +89,18 @@ static bool handle_internal_command( struct commandType* command )
 	return false;
 }
 
+/* Main function to run the command given by input line.
+ * - command: points to the given command structure
+ * - input: 
+ */
 int run( struct commandType* command, int input )
 {
+	// Parse the given command
 	commandParse (command);
+	// Check that there is a command, ie not null
 	if ((*command).line != NULL) {
-		if(!handle_internal_command(command)) {
+		// Check for exit and history commands first
+		if(!internalCommandHandler(command)) {
 			return runCommand(command, input);			
 		}
 	}
