@@ -13,7 +13,7 @@ void add_commandHistory_entry(char* history_item);
 // Print last 10 (or less) history commands (if any)
 void print_commandHistory();
 
-// Free up memory taken by history
+// Free memory taken by history
 void free_commandHistory();
 
 #endif
