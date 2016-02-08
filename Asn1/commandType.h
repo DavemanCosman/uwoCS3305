@@ -27,4 +27,7 @@ struct commandType
 // Method to execute a command, which will handle forking and piping
 int run (struct commandType* command, int input);
 
+// Executes and handles the chaining of commands via pre-existing pipe forking and IO redirection. 
+void commandExecute (struct commandType* command, int* pipes, int input_fd);
+
 #endif
