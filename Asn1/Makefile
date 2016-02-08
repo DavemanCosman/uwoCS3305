@@ -1,3 +1,8 @@
+all:
+	dcosmanShell
+	run
+	cleanup
+
 run:
 	./dcosmanShell
 
