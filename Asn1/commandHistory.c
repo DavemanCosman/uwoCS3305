@@ -16,19 +16,19 @@ void init_commandHistory()
 	init_queue (&history, MAX_HISTORY, sizeof(char) * LINE_MAX );
 }
 
-char* create_commandhistory_entry (char* command)
+char* create_commandHistory_entry (char* command)
 {
 	char* history_entry = malloc(sizeof(char) * LINE_MAX);
 	memcpy(history_entry, command, sizeof(char) * LINE_MAX);
 	return history_entry;
 }
 
-void add_commandhistory_entry (char* history_entry)
+void add_commandHistory_entry (char* history_entry)
 {
 	addToQueue (history, history_entry);
 }
 
-void print_commandhistory ()
+void print_commandHistory ()
 {
 	if ((*history).front == -1) {
 		syslog (LOG_ERR, "Error: no history to display");
@@ -61,7 +61,7 @@ void print_commandhistory ()
 	}
 }
 
-void free_history() 
+void free_commandHistory() 
 {
 	free_QueueElements (history);
 	free_Queue (&history);
