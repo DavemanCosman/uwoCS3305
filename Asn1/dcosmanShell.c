@@ -37,9 +37,9 @@ int main(int argc, char const *argv[])
 
 	// Welcome screen with description of built in commands
 	printf("/****************************************/ \n");
-	printf("/* Welcome to David Cosman Shell		*/ \n");
-	printf("/* exit : quit shell			*/ \n");
-	printf("/* history : display last 10 commands	*/ \n");
+	printf("/*	Welcome to David Cosman Shell	*/ \n");
+	printf("/* exit: quit shell			*/ \n");
+	printf("/* history: display last 10 commands	*/ \n");
 	printf("/****************************************/ \n");
 	for (;;) {
 		// input prompt
