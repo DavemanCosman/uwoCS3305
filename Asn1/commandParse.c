@@ -31,11 +31,7 @@
  }
  
 /*
- * Only the parser idea was taken from simple shell example here:
- * https://gist.github.com/parse/966049
- * See split() method
- *
- * commandType structure was created for ease of access and for built in commands.
+ * commandType structure was created for ease of access and for built in commands and execution.
  * Structure idea taken from cornell.edu pseudo code;
  * Shell: http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
  * Parser: http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/parse.html
@@ -112,6 +108,9 @@ void commandParse (struct commandType* command)
 	(*command).args[token_count] = NULL;
 }
 
+/**
+ * print_tokens method, used for testing
+ */
 void print_tokens (struct commandType* command)
 {
 	if ((*command).line!=NULL) {
