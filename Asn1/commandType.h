@@ -4,7 +4,16 @@
 #include "constants.h"
 #include "bool.h"
 
-// commandType type: holds relevant command information.
+/* commandType structure
+ * Holds relevant command information
+ * - line: the input given by user
+ * - args: the parsed tokens to be executed as commands
+ * - IOin: points to the parsed token after IO redirect in
+ * - IOout: points to the parsed token after IO redirect out
+ * - firstCommand: true if it's first command in line, false otherwise
+ * - lastCommand: true if it's last command in line, false otherwise
+ * ^ last two bools used for handling piping
+ */
 struct commandType
 {
 	char* line;
