@@ -3,8 +3,7 @@
 
 #include "commandType.h"
 
-// Executes the given command in the current context. 
-// Handles the chaining of commands via pre-existing pipes and IO redirection. 
-void execute_command( struct commandType* command, int* pipes, int input_fd );
+// Executes and handles the chaining of commands via pre-existing pipe forking and IO redirection. 
+void commandExecute (struct commandType* command, int* pipes, int input_fd);
 
 #endif
