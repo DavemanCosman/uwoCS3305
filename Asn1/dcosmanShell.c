@@ -75,7 +75,7 @@ int main(int argc, char const *argv[])
 		// Run last command
 		struct commandType command = {
 			.line = cmd,
-			.firstCommand = isFirst;
+			.firstCommand = isFirst,
 			.lastCommand = true
 		};
 		run (&command, input_stream);
