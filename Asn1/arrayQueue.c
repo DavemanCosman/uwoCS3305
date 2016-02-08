@@ -1,3 +1,12 @@
+/**
+ * arrayQueue.c
+ * 
+ * David Cosman, Feb 8th 2015
+ * UWO CS 3305
+ * 
+ * arrayQueue used to store last 10 history commands
+ */
+
 #include "arrayQueue.h"
 #include "bool.h"
 
