@@ -1,3 +1,11 @@
+/**
+ * dcosmanShell.c
+ * 
+ * David Cosman, Feb 8th 2015
+ * UWO CS 3305
+ * 
+ * My shell for assignment 1
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,19 +18,12 @@
 #include "constants.h"
 #include "bool.h"
 
+// handle signals
 typedef void (*sighandler_t)(int);
 
-void handle_signal(int signo)
-{
-	printf("\nDavidCosman> ");
+// signal handler
+void handle_signal(int signo) {
 	fflush(stdout);
-}
-
-void fill_argv(char *tmp_argv)
-{
-	char *foo = tmp_argv;
-	int index = 0;
-	char ret[100];
 }
 
 int main(int argc, char const *argv[])
@@ -30,7 +31,7 @@ int main(int argc, char const *argv[])
 	// Create input line and start command history
 	char input_line[LINE_MAX];
 	init_commandHistory();
-	// To andle signals (ctrl+C)
+	// for handling signals
 	signal (SIGINT, SIG_IGN);
 	signal (SIGINT, handle_signal);
 
