@@ -1,7 +1,2 @@
-all: shell
-
-shell:
-	gcc *.c -o dcosmanShell
-
-clean:
-	rm shell
+dcosmanShell: *.c
+	gcc -o dcosmanShell *.c
