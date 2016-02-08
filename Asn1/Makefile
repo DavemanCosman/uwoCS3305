@@ -1,13 +1,8 @@
-all:
-	dcosmanShell
-	run
-	cleanup
+dcosmanShell: *.c
+	gcc -o dcosmanShell *.c
 
 run:
 	./dcosmanShell
-
-dcosmanShell: *.c
-	gcc -o dcosmanShell *.c
 
 cleanup:
 	rm dcosmanShell
