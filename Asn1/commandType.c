@@ -20,24 +20,6 @@ static void forkWait()
 	}
 }
 
-/* Run the command given by input line and handle it
- * - command: points to the given command structure
- * - input: returns value from previous command, used for piping
- */
-int run(struct commandType* command, int input)
-{
-	// Parse the given command using the parser
-	commandParse (command);
-	// Check that there is a command, ie not null
-	if ((*command).line != NULL) {
-		// Check for exit and history commands first
-		if(!internalCommandHandler(command)) {
-			return runCommand(command, input);			
-		}
-	}
-	return 0;
-}
-
 /* runCommand
  * Pipes command and passes it to execute method
  * handles write and read streams
@@ -127,6 +109,24 @@ static bool internalCommandHandler( struct commandType* command )
 
 	// not an internal command
 	return false;
+}
+
+/* Run the command given by input line and handle it
+ * - command: points to the given command structure
+ * - input: returns value from previous command, used for piping
+ */
+int run(struct commandType* command, int input)
+{
+	// Parse the given command using the parser
+	commandParse (command);
+	// Check that there is a command, ie not null
+	if ((*command).line != NULL) {
+		// Check for exit and history commands first
+		if(!internalCommandHandler(command)) {
+			return runCommand(command, input);			
+		}
+	}
+	return 0;
 }
 
 /* executeCommand
