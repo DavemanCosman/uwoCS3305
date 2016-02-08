@@ -32,7 +32,8 @@ int main(int argc, char const *argv[])
 {
 	char input_line[LINE_MAX];
 	init_commandHistory();
-	struct commandType command;
+	signal (SIGINT, SIG_IGN);
+	signal (SIGINT, handle_signal);
 
 	printf("/****************************************/ \n");
 	printf("/* Welcome to Dcosman Shell		*/ \n");
@@ -52,26 +53,43 @@ int main(int argc, char const *argv[])
 		int input_stream = 0;			// store input stream here
 		char* cmd = input_line;			// get command from input line
 		char* nextPipe = strchr (cmd, '|');	// go to next pipe
+		bool isFirst = true;
 		
 		while ( nextPipe != NULL) {
 			*nextPipe = '\0';
-			command.line = cmd;
-			// execute commands here and include the bottom part (?)
+			struct commandType command = {
+				.line = cmd,
+				.firstCommand = isFirst,
+				.lastCommand = false
+			};
+			input_stream = run (&command, input_stream);
+			
+			cmd = nextPipe + 1;
+			nextPipe = strchr(cmd, '|');
+			/* execute commands here and include the bottom part (?)
 			commandParse (&command);
-			print_tokens (&command);
+			print_tokens (&command);*/
+			isFirst = false;
 		}
 		
 		// Run last command
-		command.line = cmd;
-		// execute command here and include the bottom part (?)
+		struct commandType command = {
+			.line = cmd,
+			.firstCommand = isFirst;
+			.lastCommand = true
+		};
+		run (&command, input_stream);
+
+		/* execute command here and include the bottom part (?)
 		commandParse (&command);
-		print_tokens (&command);
+		print_tokens (&command);*/
 		
 		add_commandhistory_entry (history_entry);
-		printf("\ncommand history:\n");
-		print_commandhistory();
+		/*printf("\ncommand history:\n");
+		print_commandhistory();*/
 	}
 	printf("\n");
 	// clean up here
-	return 0;
+	free_history();
+	return EXIT_SUCCESS;
 }
