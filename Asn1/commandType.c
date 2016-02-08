@@ -21,6 +21,62 @@ static void forkWait()
 	}
 }
 
+/* executeCommand
+ * Handles forking, piping and IO redirection here
+ * - command: pointer to given command structure to interpret
+ * - pipes: pointer to the amount of pipes
+ * - input_fd: input file descriptor, used for piping
+ * SCHEME:
+ *	STDIN --> O --> O --> O --> STDOUT
+ */
+void executeCommand( struct commandType* command, int* pipes, int input_fd )
+{
+	FILE* file_in = NULL;
+	FILE* file_out = NULL;
+
+	// First command
+	if( (*command).firstCommand == true && (*command).lastCommand == false && input_fd == 0) {
+		dup2(pipes[WRITE], STDOUT_FILENO);
+	} 
+	// Middle commands
+	else if((*command).firstCommand == false && (*command).lastCommand == false && input_fd != 0 ) {
+		dup2(input_fd, STDIN_FILENO);
+		dup2(pipes[WRITE], STDOUT_FILENO);
+	} 
+	// Last command
+	else {
+		dup2(input_fd, STDIN_FILENO);
+	}
+
+	// stdin is redirected
+	if( (*command).IOin ) {
+		file_in = fopen((*command).IOin, "r");
+		dup2(fileno(file_in), STDIN_FILENO );
+	}
+	
+	// stdout is redirected
+	if((*command).IOout) {
+		file_out = fopen((*command).IOout, "w+" );
+		dup2(fileno(file_out), STDOUT_FILENO);
+	}
+
+	// executeCommand the command
+	int executeCommand = execvp((*command).args[0], (*command).args);
+
+	// Close any open file streams
+	if(file_in != NULL) {
+		fclose(file_in);
+	}
+	if(file_out != NULL) {
+		fclose(file_out);
+	}
+
+	// Exit if failure to executeCommand
+	if(executeCommand == -1) {
+		_exit(EXIT_FAILURE);
+	}
+}
+
 /* runCommand
  * Pipes command and passes it to execute method
  * handles write and read streams
@@ -128,60 +184,4 @@ int run(struct commandType* command, int input)
 		}
 	}
 	return 0;
-}
-
-/* executeCommand
- * Handles forking, piping and IO redirection here
- * - command: pointer to given command structure to interpret
- * - pipes: pointer to the amount of pipes
- * - input_fd: input file descriptor, used for piping
- * SCHEME:
- *	STDIN --> O --> O --> O --> STDOUT
- */
-void executeCommand( struct commandType* command, int* pipes, int input_fd )
-{
-	FILE* file_in = NULL;
-	FILE* file_out = NULL;
-
-	// First command
-	if( (*command).firstCommand == true && (*command).lastCommand == false && input_fd == 0) {
-		dup2(pipes[WRITE], STDOUT_FILENO);
-	} 
-	// Middle commands
-	else if((*command).firstCommand == false && (*command).lastCommand == false && input_fd != 0 ) {
-		dup2(input_fd, STDIN_FILENO);
-		dup2(pipes[WRITE], STDOUT_FILENO);
-	} 
-	// Last command
-	else {
-		dup2(input_fd, STDIN_FILENO);
-	}
-
-	// stdin is redirected
-	if( (*command).IOin ) {
-		file_in = fopen((*command).IOin, "r");
-		dup2(fileno(file_in), STDIN_FILENO );
-	}
-	
-	// stdout is redirected
-	if((*command).IOout) {
-		file_out = fopen((*command).IOout, "w+" );
-		dup2(fileno(file_out), STDOUT_FILENO);
-	}
-
-	// executeCommand the command
-	int executeCommand = execvp((*command).args[0], (*command).args);
-
-	// Close any open file streams
-	if(file_in != NULL) {
-		fclose(file_in);
-	}
-	if(file_out != NULL) {
-		fclose(file_out);
-	}
-
-	// Exit if failure to executeCommand
-	if(executeCommand == -1) {
-		_exit(EXIT_FAILURE);
-	}
 }
