@@ -12,17 +12,17 @@ void execute_command( struct commandType* command, int* pipes, int input_fd )
 	FILE* file_out = NULL;
 
 	// First command
-	if( (*command).isFirstCommand == true && (*command).lastCommand == false && input_fd == 0) {
-		dup2( pipes[PIPE_WRITE], STDOUT_FILENO );
+	if( (*command).firstCommand == true && (*command).lastCommand == false && input_fd == 0) {
+		dup2(pipes[WRITE], STDOUT_FILENO);
 	} 
 	// Middle commands
 	else if((*command).firstCommand == false && (*command).lastCommand == false && input_fd != 0 ) {
-		dup2( input_fd, STDIN_FILENO );
-		dup2( pipes[PIPE_WRITE], STDOUT_FILENO );
+		dup2(input_fd, STDIN_FILENO);
+		dup2(pipes[WRITE], STDOUT_FILENO);
 	} 
 	// Last command
 	else {
-		dup2( input_fd, STDIN_FILENO );
+		dup2(input_fd, STDIN_FILENO);
 	}
 
 	// stdin is redirected
@@ -33,8 +33,8 @@ void execute_command( struct commandType* command, int* pipes, int input_fd )
 	
 	// stdout is redirected
 	if((*command).redirect_out) {
-		file_out = fopen( (*command).redirect_out, "w+" );
-		dup2( fileno( file_out ), STDOUT_FILENO );
+		file_out = fopen((*command).redirect_out, "w+" );
+		dup2(fileno(file_out), STDOUT_FILENO);
 	}
 
 	// Execute the command
