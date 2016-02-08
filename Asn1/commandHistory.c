@@ -1,3 +1,12 @@
+/**
+ * commandHistory.c
+ * 
+ * David Cosman, Feb 8th 2015
+ * UWO CS 3305
+ * 
+ * Functions to store command entries in history
+ */
+ 
 #include "commandHistory.h"
 
 #include <stdlib.h>
