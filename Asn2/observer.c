@@ -7,11 +7,10 @@
 
 int main(int argc, char **argv)
 {
-	 if ( argc != 2 ) 							/* argc should be 2 for correct execution */
-    {
+	/* argc should be 2 for correct execution */
+	if ( argc != 2 ) {
         printf( "usage: %s filename", argv[0] );
     }
-    
     
 		char *st = (char*)malloc(sizeof(char)*256);
 		strcat(st, "pidof ");
