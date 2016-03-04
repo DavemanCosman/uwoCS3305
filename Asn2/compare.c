@@ -43,8 +43,6 @@ void minimalFunc(){}
 
 int main(int argc, char *argv[])
 {
-  start = clock():
-  funcCall();
   struct timespec start, end;
   uint64_t elapsedTime;
   int i,s;
