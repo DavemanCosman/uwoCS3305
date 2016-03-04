@@ -1,21 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/utsname.h>
 
 main() {
 
    FILE *fp;
    char buff[255];
+   const char *vendor_id = "vendor_id";
+   const char *model = "model";
 
    fp = fopen("/proc/cpuinfo", "rb");
-   fscanf(fp, "%s", buff);
-   printf("1 : %s\n", buff );
-
-   fgets(buff, 255, (FILE*)fp);
-   printf("2: %s\n", buff );
-   
-   fgets(buff, 255, (FILE*)fp);
-   printf("3: %s\n", buff );
+   while (!feof(fp)){
+      fscanf(fp, "%s", buff);
+      if (strcmp(buff, vendor_id) == 0) {
+         printf("%s", buff );
+         fgets(buff, 255, (FILE*)fp);
+         printf("%s\n", buff );}
+   }
    fclose(fp);
+   return (0);
 }
