@@ -1,6 +1,0 @@
-Hello World
-How are you?
-I am testing command line
-More jargon here
-This is David Cosman
-This is to test cat and file IO.
