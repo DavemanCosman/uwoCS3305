@@ -26,9 +26,7 @@ main() {
    fclose(fp);
    
    fp = fopen("/proc/version", "rb");
-   while (!feof(fp)){
-      fgets(buff,255,(FILE*)fp);
-      printf("%s\n", buff );
-   }
+   fgets(buff,255,(FILE*)fp);
+   printf("%s\n", buff );
    return (0);
 }
