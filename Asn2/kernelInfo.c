@@ -15,8 +15,20 @@ main() {
       if (strcmp(buff, vendor_id) == 0) {
          printf("%s", buff );
          fgets(buff, 255, (FILE*)fp);
-         printf("%s\n", buff );}
+         printf("%s\n", buff );
+      }
+      if (strcmp(buff, model) == 0) {
+         printf("%s", buff );
+         fgets(buff, 255, (FILE*)fp);
+         printf("%s\n", buff );
+      }
    }
    fclose(fp);
+   
+   fp = fopen("/proc/version", "rb");
+   while (!feof(fp)){
+      fgets(buff,255,(FILE*)fp);
+      printf("%s\n", buff );
+   }
    return (0);
 }
