@@ -52,4 +52,10 @@ int main(int argc, char *argv[])
   clock_gettime(CLOCK_ID, &end);
   elapsedTime = diff(start,end);
   printf("elapsed process CPU time for Minimal Function Call is %llu\n",(long long unsigned int) elapsedTime);
+  
+  clock_gettime(CLOCK_ID, &start);
+  getpid();
+  clock_gettime(CLOCK_ID, &end);
+  elapsedTime = diff(start,end);
+  printf("elapsed process CPU time for getpid System Call is %llu\n",(long long unsigned int) elapsedTime);
 }
