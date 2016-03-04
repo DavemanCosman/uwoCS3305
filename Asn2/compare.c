@@ -1,5 +1,6 @@
 /*
 ** This program illustrates the use of clock_gettime 
+* Taken from CS 3305, modified for use to measure the time of calling a Function and a Process
 */
 
 #include <stdio.h>
@@ -25,21 +26,6 @@ uint64_t diff(struct timespec start, struct timespec end)
 }
 
 void minimalFunc(){}
-
-/*int main(void)
-{
-  start = clock();
-  minimalFunc();
-  end = clock();
-  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-  printf("Time taken for function call :\n%.17f\n",cpu_time_used);
-
-  start = clock();
-  getpid();
-  end = clock();
-  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-  printf("Time taken for system call :\n%.17f\n",cpu_time_used);
-}*/
 
 int main(int argc, char *argv[])
 {
