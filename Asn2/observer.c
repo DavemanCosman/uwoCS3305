@@ -62,8 +62,8 @@ int main(int argc, char **argv)
 		// Get user time (position 14, or 13 in array) and kernel time (position 15, or 14 in array)
 		int l = atol(array[13]);
 		int m = atol(array[14]);
-		printf("user time = %ld\r\n", l);
-		printf("system time = %ld\r\n", m);
+		printf("user time = %ld\r\n", l/sysconf(_SC_CLK_TCK));
+		printf("system time = %ld\r\n", m/sysconf(_SC_CLK_TCK));
 		sleep(1);
 		system("clear");
 		
