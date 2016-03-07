@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 		printf( "usage: %s filename", argv[0] );
   }
   // Allocate memory for pidof and point to the command
-  	printf("hello 2/n");
+  	printf("hello 2 \n");
 	char *st = (char*)malloc(sizeof(char)*256);
 	strcat(st, "pidof ");
 	strcat(st, argv[1]);
@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 
 	// Execute command as subprocess
 	char line[strlen(st)];
+  	FILE *executable = popen(argv[1], "r");
 	FILE *cmd = popen(st, "r");
 	fgets(line, strlen(st), cmd);
 	// get pid of process
