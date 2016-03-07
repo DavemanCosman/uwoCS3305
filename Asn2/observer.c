@@ -4,24 +4,26 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 int main(int argc, char **argv)
 {
+	fprintf("hello 1 \n");
 	// Check argc, should be 2 for proper execution 
 	if ( argc != 2 ) {
 		printf( "usage: %s filename", argv[0] );
   }
   // Allocate memory for pidof and point to the command
+  	fprintf("hello 2/n");
 	char *st = (char*)malloc(sizeof(char)*256);
 	strcat(st, "pidof ");
 	strcat(st, argv[1]);
+	fprintf("Test st: %s \n", st);
+
 	// Execute command as subprocess
 	char line[strlen(st)];
 	FILE *cmd = popen(st, "r");
 	fgets(line, strlen(st), cmd);
 	// get pid of process
 	pid_t pid = strtoul(line, NULL, 10);
-	
 	pclose(cmd);
 	
 	// Allocate memory for proc
@@ -29,9 +31,10 @@ int main(int argc, char **argv)
 	strcat(str, "/proc/");
 	char s[15];
 	sprintf(s, "%d", pid);
-  // concatenate pid and the /stat path
+	// concatenate pid and the /stat path
 	strcat(str, s);
 	strcat(str, "/stat");
+	fprintf("Test str: %s \n", str);
 	
 	// start observing
 	while(1) {
