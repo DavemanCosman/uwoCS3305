@@ -4,15 +4,19 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+typedef void (*sighandler_t)(int);
+
+void handle_signal (int signo) {
+	fflush(stdout);
+}
+
 int main(int argc, char **argv)
 {
-	printf("hello 1 \n");
 	// Check argc, should be 2 for proper execution 
 	if ( argc != 2 ) {
 		printf( "usage: %s filename", argv[0] );
   }
   // Allocate memory for pidof and point to the command
-  	printf("hello 2 \n");
 	char *st = (char*)malloc(sizeof(char)*256);
 	strcat(st, "pidof ");
 	strcat(st, argv[1]);
@@ -64,7 +68,8 @@ int main(int argc, char **argv)
 		int l = atol(array[13]);
 		int m = atol(array[14]);
 		printf("utime = %ld\r\n", l/sysconf(_SC_CLK_TCK));
-		printf("stime = %ld\r\n",  m/sysconf(_SC_CLK_TCK));
+		printf("stime = %ld\r\n", m/sysconf(_SC_CLK_TCK));
+		sleep(5);
 		system("clear");
 		
 		fclose(cpuinfo);
