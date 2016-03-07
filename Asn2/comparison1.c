@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
        exit(0);
     }
   
-  system("cat %s", argv[1]);
+  printf("cat %s", argv[1]);
   
     if (!strcmp(argv[1], "-o")) {
          policy = SCHED_OTHER;
