@@ -16,7 +16,6 @@ int main(int argc, char **argv)
 	char *st = (char*)malloc(sizeof(char)*256);
 	strcat(st, "pidof ");
 	strcat(st, argv[1]);
-	printf("Test st: %s \n", st);
 
 	// Execute command as subprocess
 	char line[strlen(st)];
@@ -35,8 +34,7 @@ int main(int argc, char **argv)
 	// concatenate pid and the /stat path
 	strcat(str, s);
 	strcat(str, "/stat");
-	printf("Test str: %s \n", str);
-	
+
 	// start observing
 	while(1) {
 		FILE *cpuinfo = NULL;						
@@ -63,8 +61,8 @@ int main(int argc, char **argv)
 		}
 		int l = atol(array[13]);
 		int m = atol(array[14]);
-		printf("utime = %ld\r\n", l/sysconf(_SC_CLK_TCK));
-		printf("stime = %ld\r\n", m/sysconf(_SC_CLK_TCK));
+		printf("user time = %ld\r\n", l/sysconf(_SC_CLK_TCK));
+		printf("system time = %ld\r\n", m/sysconf(_SC_CLK_TCK));
 		sleep(1);
 		system("clear");
 		
