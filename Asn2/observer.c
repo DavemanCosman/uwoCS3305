@@ -7,51 +7,45 @@
 
 int main(int argc, char **argv)
 {
-	/* argc should be 2 for correct execution */
+	// Check argc, should be 2 for proper execution 
 	if ( argc != 2 ) {
-        printf( "usage: %s filename", argv[0] );
-    }
-    
-		char *st = (char*)malloc(sizeof(char)*256);
-		strcat(st, "pidof ");
-		strcat(st, argv[1]);
-		
-		char line[strlen(st)];
-		FILE *cmd = popen(st, "r");
-
-		fgets(line, strlen(st), cmd);
-		pid_t pid = strtoul(line, NULL, 10);
-
-		pclose(cmd);
-		
-		
-		char *str = (char*)malloc(sizeof(char)*256);
-		strcat(str, "/proc/");
+		printf( "usage: %s filename", argv[0] );
+  }
+  // Allocate memory for pidof and point to the command
+	char *st = (char*)malloc(sizeof(char)*256);
+	strcat(st, "pidof ");
+	strcat(st, argv[1]);
+	// Execute command as subprocess
+	char line[strlen(st)];
+	FILE *cmd = popen(st, "r");
+	fgets(line, strlen(st), cmd);
+	// get pid of process
+	pid_t pid = strtoul(line, NULL, 10);
 	
-		char s[15];
-		sprintf(s, "%d", pid);
+	pclose(cmd);
 	
-		strcat(str, s);
-		strcat(str, "/stat");
-	while(1)
-    {
+	// Allocate memory for proc
+	char *str = (char*)malloc(sizeof(char)*256);
+	strcat(str, "/proc/");
+	char s[15];
+	sprintf(s, "%d", pid);
+  // concatenate pid and the /stat path
+	strcat(str, s);
+	strcat(str, "/stat");
+	
+	// start observing
+	while(1) {
 		FILE *cpuinfo = NULL;						
 		cpuinfo = fopen(str, "rb");		
 		char buffer[502] = {0};						
-	
 		fread(buffer, 500, 1, cpuinfo);   			
 		
+		// count of buffer length
 		int count = 0;
 		int i;
-	
-	
-		for (i = 0; i < strlen(buffer); i++)
-		{
-		    if (buffer[i] == ' ')
-		    {
-		    	count++;
-		    	
-		    }
+		for (i = 0; i < strlen(buffer); i++) {
+			if (buffer[i] == ' ') {
+		  	count++; }
 		}
 	  	
 		int j;
@@ -59,10 +53,9 @@ int main(int argc, char **argv)
 		char *array[count];
 		j = 0;
 		p = strtok (buffer," ");  
-		while (p != NULL)
-		{
+		while (p != NULL) {
 			array[j++] = p;
-		  	p = strtok (NULL, " ");
+			p = strtok (NULL, " ");
 		}
 		int l = atol(array[13]);
 		int m = atol(array[14]);
@@ -70,8 +63,7 @@ int main(int argc, char **argv)
 		printf("stime = %ld\r\n",  m/sysconf(_SC_CLK_TCK));
 		system("clear");
 		
-		fclose(cpuinfo);							
-
+		fclose(cpuinfo);
 	}
 	free(st);
 	free(str);
