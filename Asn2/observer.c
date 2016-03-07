@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
 	// Execute command as subprocess
 	char line[strlen(st)];
-  	FILE *executable = popen(argv[1], "r");
+  	system(argv[1]);
 	FILE *cmd = popen(st, "r");
 	fgets(line, strlen(st), cmd);
 	// get pid of process
