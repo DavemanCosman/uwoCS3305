@@ -14,25 +14,27 @@ int main(int argc, char *argv[])
 {
   pid_t pid;
     int i;
-
     int policy;
     struct sched_param param;
    
-    if (argc != 2){
+    if (argc < 3){
        perror("usage: comparison1 -[o = other, f = FIFO, r = Round Robin] programName \n");
        exit(0);
     }
-  char* c = argv[1];
-  
-  printf("%s", c);
-  
-    if (!strcmp(argv[1], "-o")) {
+    
+  char* setPolicy = argv[1];
+  char command[50];
+  for (i=2; i<sizeof(argv) ; i++){
+    strcat(command, argv[i]);
+  }
+
+    if (strcmp(setPolicy, "-o")==0) {
          policy = SCHED_OTHER;
     }
-    else if(!strcmp(argv[1], "-f")){
+    else if(strcmp(setPolicy, "-f")==0){
          policy = SCHED_FIFO;
     }
-    else if (!strcmp(argv[1], "-r")){
+    else if (strcmp(setPolicy, "-r")==0){
          policy = SCHED_RR;
     }
     else{
@@ -47,9 +49,6 @@ int main(int argc, char *argv[])
          perror("Error setting scheduler policy");
          exit(EXIT_FAILURE);
      }
-     
-  char command[50];
-  strcpy(command, argv[2]);
 
   while (1){
     sleep(1);
