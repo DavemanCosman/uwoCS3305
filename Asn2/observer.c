@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-	fprintf("hello 1 \n");
+	printf("hello 1 \n");
 	// Check argc, should be 2 for proper execution 
 	if ( argc != 2 ) {
 		printf( "usage: %s filename", argv[0] );
