@@ -6,10 +6,6 @@
 
 typedef void (*sighandler_t)(int);
 
-void handle_signal (int signo) {
-	fflush(stdout);
-}
-
 int main(int argc, char **argv)
 {
 	// Check argc, should be 2 for proper execution 
@@ -69,7 +65,7 @@ int main(int argc, char **argv)
 		int m = atol(array[14]);
 		printf("utime = %ld\r\n", l/sysconf(_SC_CLK_TCK));
 		printf("stime = %ld\r\n", m/sysconf(_SC_CLK_TCK));
-		sleep(5);
+		sleep(1);
 		system("clear");
 		
 		fclose(cpuinfo);
