@@ -12,11 +12,11 @@ int main(int argc, char **argv)
 		printf( "usage: %s filename", argv[0] );
   }
   // Allocate memory for pidof and point to the command
-  	fprintf("hello 2/n");
+  	printf("hello 2/n");
 	char *st = (char*)malloc(sizeof(char)*256);
 	strcat(st, "pidof ");
 	strcat(st, argv[1]);
-	fprintf("Test st: %s \n", st);
+	printf("Test st: %s \n", st);
 
 	// Execute command as subprocess
 	char line[strlen(st)];
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 	// concatenate pid and the /stat path
 	strcat(str, s);
 	strcat(str, "/stat");
-	fprintf("Test str: %s \n", str);
+	printf("Test str: %s \n", str);
 	
 	// start observing
 	while(1) {
