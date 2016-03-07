@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <time.h>
+#include <sched.h>
+#include <sys/types.h>
+#include <errno.h>
 #include <math.h>
 
 int main(int argc, char *argv[])
