@@ -12,30 +12,30 @@
 
 int main(int argc, char *argv[])
 {
-  pid_t pid;
-    int i;
     int policy;
     struct sched_param param;
    
-    if (argc < 3){
+    if (argc != 3){
        perror("usage: comparison1 -[o = other, f = FIFO, r = Round Robin] programName \n");
        exit(0);
     }
     
   char* setPolicy = argv[1];
   char command[50];
-  for (i=2; i<sizeof(argv) ; i++){
-    strcat(command, argv[i]);
-  }
+  strcpy(command, argv[2]);
+  printf("comparing program %s \n", command);
 
     if (strcmp(setPolicy, "-o")==0) {
          policy = SCHED_OTHER;
+         printf("policy set to Other %d \n", policy);
     }
     else if(strcmp(setPolicy, "-f")==0){
          policy = SCHED_FIFO;
+         printf("policy set to FIFO %d \n", policy);
     }
     else if (strcmp(setPolicy, "-r")==0){
          policy = SCHED_RR;
+         printf("policy set to RR %d \n", policy);
     }
     else{
          perror("Scheduling policy not understood\n");
