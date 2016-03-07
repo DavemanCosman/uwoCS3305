@@ -22,8 +22,9 @@ int main(int argc, char *argv[])
        perror("usage: comparison1 -[o = other, f = FIFO, r = Round Robin] programName \n");
        exit(0);
     }
+  char* c = argv[1];
   
-  printf("cat %s", argv[1]);
+  printf("%s", c);
   
     if (!strcmp(argv[1], "-o")) {
          policy = SCHED_OTHER;
