@@ -68,7 +68,6 @@ int main(int argc, char** argv)
   }
   // create space for page table entries
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
-  tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
 
   // Initialize defaults for page table:
   int i, j, k; 
@@ -87,6 +86,7 @@ int main(int argc, char** argv)
     if(ch == '\n')
       lineCount++;
   }
+  tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
 
   // initialize page table array with entries from file
   int pt = 0, q; 
@@ -170,9 +170,9 @@ int main(int argc, char** argv)
 
   int o;
   for(o=0; o < frames; o++) {
-    printf("pageTable at %d is %d\n", o, pageTable[o].frameNumber); 
+    printf("Page tablee given frame %d: %d\n", o, pageTable[o].frameNumber); 
   }
-  printf("Number of page faults incurred was %d\n", faults); 
+  printf("Page faults found: %d\n", faults); 
 
   // cleanup
   close(file); 
