@@ -157,13 +157,12 @@ int main(int argc, char** argv)
         gettimeofday(&curTime, NULL);
         pageTable[lu].lastUsed = curTime.tv_usec;
       }
-      else
-        printf("ERROR: Algorithm not reached.\n");
-      
-      printf("\nResulting list: ");
-      for(i = 0; i < frames; i++)
-        printf("%d, ", pageTable[i].frameNumber);
+      else {
+        printf("ERROR: Algorithm not reached.\n"); }
     }
+    printf("\nResulting list: ");
+    for(i = 0; i < frames; i++) {
+      printf("%d, ", pageTable[i].frameNumber); }
   }
 
   printf("\nPage faults encountered: %d\n", faults);
