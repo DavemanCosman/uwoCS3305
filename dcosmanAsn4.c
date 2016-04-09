@@ -90,16 +90,16 @@ int main(int argc, char** argv)
       lineCount++;
   }
   tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
-  i = 0;
+  j = 0;
   rewind(file);
   while(!feof(file))
   {
     fscanf(file, "%d", &q); 
-    printf("scanning file: q = %d\n", q);
-    tlb[i].frameNumber = q;
-    tlb[i].lastUsed = 0; 
-    tlb[i].useCount = 0;
-    i++;
+    printf("scanning frame number: %d\n", q); // Problem here, last num duplicated.
+    tlb[j].frameNumber = q;
+    tlb[j].lastUsed = 0; 
+    tlb[j].useCount = 0;
+    j++;
   }
 
   // read elements in file and check if they are in table yet
