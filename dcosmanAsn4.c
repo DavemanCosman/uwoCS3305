@@ -113,8 +113,10 @@ int main(int argc, char** argv)
     for(i = 0; i < frames; i++) {
       if(pageTable[i].frameNumber == q || pageTable[i].useCount == 0) {
         pageTable[i].frameNumber = q;
-        if (pageTable[i].useCount == 0)
+        if (pageTable[i].useCount == 0) {
           faults++; // fault found if number of uses was 0 (null)
+          printf("\nFound a fault"); }
+        else { printf("\nFound a hit"); }
         pageTable[i].useCount++;
         gettimeofday(&curTime, NULL); 
         pageTable[i].lastUsed = curTime.tv_usec;
@@ -125,6 +127,7 @@ int main(int argc, char** argv)
     // check if item was inserted into page table
     if(hit == false) {
       faults++;
+      printf("\nFound a fault");
       // Least Recently Used
       if(lru == true) {
         printf("\nusing LRU");
