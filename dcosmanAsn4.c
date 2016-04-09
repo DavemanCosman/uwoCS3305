@@ -111,11 +111,11 @@ int main(int argc, char** argv)
     for(j = 0; j < frames; j++) {
       if(pageTable[j].frameNumber == q) {
         hit = 1;
+        faults++;
         break; 
        }
     }
     if(hit != 1) {
-      faults++;
       printf("NOTE: faults increase\n");
       //printf("");
       // check if there is an empty frame, if so put new value in
@@ -168,13 +168,14 @@ int main(int argc, char** argv)
         }
       }
     }
+    int o;
+    printf("Resultig list: ");
+    for(o=0; o < frames; o++) {
+      printf("%d, ", pageTable[o].frameNumber); 
+    }
   }
 
-  int o;
-  for(o=0; o < frames; o++) {
-    printf("Page table fault found at frame %d: %d\n", o, pageTable[o].frameNumber); 
-  }
-  printf("Page faults found: %d\n", faults); 
+  printf("Page faults encountered: %d\n", faults); 
 
   // cleanup
   close(file); 
