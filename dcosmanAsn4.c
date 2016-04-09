@@ -31,7 +31,7 @@ struct timeval curTime; // represents real time for lastUsed
 int main(int argc, char** argv) 
 {
   int i, j, q; // used for loops
-  int frames
+  int frames;
   bool hit;
   char *algorithm;
   char *filename;
