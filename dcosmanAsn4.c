@@ -111,11 +111,11 @@ int main(int argc, char** argv)
     for(j = 0; j < frames; j++) {
       if(pageTable[j].frameNumber == q) {
         hit = 1;
-        faults++;
         break; 
        }
     }
     if(hit != 1) {
+      faults++; prinft("! ");
       // check if there is an empty frame, if so put new value in
       for(i=0; i < frames; i++) {
         if(pageTable[i].useCount == 0) {
