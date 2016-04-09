@@ -5,6 +5,7 @@
 #include <math.h>
 #include <time.h>
 
+typedef enum { false, true } bool;
 // File structure for page reference
 typedef struct pageInfo
 {
@@ -29,19 +30,20 @@ struct timeval curTime; // represents real time for lastUsed
  */
 int main(int argc, char** argv) 
 {
-  int i, j, o;
-  int frames;
+  int i, j, q; // used for loops
+  int frames
+  bool hit;
   char *algorithm;
   char *filename;
   FILE *file;
   pageInfoEntry *pageTable;   // pointer to page table, stored as an array
   pageInfoEntry *tlb;         // TLB, now just used to store the contents of the file
-  int lfu = 0, lru = 0;
+  bool lfu = false, lru = false;
 
   // check for command line argument - assumes valid digit entered
   if (argc != 4){
     printf("usage: ./simulator [frameRefNumber] [filename] [LRU | LFU]\n");
-    printf("example: 4 foo LRU\n");
+    printf("example: 4 trace LRU\n");
     exit(0);
   }
 
@@ -70,106 +72,97 @@ int main(int argc, char** argv)
   // deterime whether algorithm is LFU or LRU
   algorithm = argv[3]; // LRU or LF
   if(strncmp(algorithm, "LFU", 3) == 0 || strncmp(algorithm, "lfu", 3) == 0)
-     lfu = 1;
+     lfu = true;
   else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
-    lru = 1;
+    lru = true;
   else {
-    printf("Incorrect argument: %s.\n", algorithm);
+    printf("Incorrect argument: %s\n", algorithm);
+    printf("usage: ./simulator [frameRefNumber] [filename] [LRU | LFU]\n");
+    printf("example: 4 trace LRU\n");
     return -1;
   }
 
-  // initialize page table array with entries from file
-  int lineCount = 0; // number of lines in the file
-  int ch;
+  // initialize TLB array with entries from file
+  int c, lineCount = 0; // number of lines in the file
   while(!feof(file)) {
-    ch = fgetc(file);
-    if(ch == '\n')
+    c = fgetc(file);
+    if(c == '\n')
       lineCount++;
   }
   tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
-
-  // initialize page table array with entries from file
-  int pt = 0, q; 
+  i = 0;
   rewind(file);
   while(!feof(file))
   {
     fscanf(file, "%d", &q); 
     printf("scanning file: q = %d", q);
-    tlb[pt].frameNumber = q;
-    tlb[pt].lastUsed = 0; 
-    tlb[pt].useCount = 0;
-    pt++;
+    tlb[i].frameNumber = q;
+    tlb[i].lastUsed = 0; 
+    tlb[i].useCount = 0;
+    i++;
   }
 
   // read elements in file and check if they are in table yet
   rewind(file);
-  int hit;
   while(!feof(file)) {
     fscanf(file, "%d", &q);
-    hit = 0; 
-    // check if frame number in table matches
-    for(j = 0; j < frames; j++) {
-      if(pageTable[j].frameNumber == q) {
-        hit = 1;
-        break; 
+    hit = false; 
+    // check if frame number in table matches or if empty slot exists
+    for(i = 0; i < frames; i++) {
+      if(pageTable[i].frameNumber == q || pageTable[i].useCount == 0) {
+        pageTable[i].frameNumber = q;
+        if (pageTable[i].useCount == 0)
+          faults++; // fault found if number of uses was 0 (null)
+        pageTable[i].useCount++;
+        gettimeofday(&curTime, NULL); 
+        pageTable[i].lastUsed = curTime.tv_usec;
+        hit = true;
+        break;
        }
     }
-    if(hit != 1) {
+    // check if item was inserted into page table
+    if(hit == false) {
       faults++;
-      printf("! ");
-      // check if there is an empty frame, if so put new value in
-      for(i=0; i < frames; i++) {
-        if(pageTable[i].useCount == 0) {
-          pageTable[i].frameNumber = q;
-          pageTable[i].useCount++; 
-          gettimeofday(&curTime, NULL); 
-          pageTable[i].lastUsed = curTime.tv_usec;
-          hit = 1; 
-          break;
-        }
-      }
-      // if no empty slot (hit is still false), use lru or lfu algorithm
-      if(hit != 1) {
-        // Least Recently Used
-        if(lru == 1) {
-          //replace value which was used least recently
-          int m, o = 0; 
-          long double oldest = pageTable[0].lastUsed; 
-          for(m=1; m < frames; m++) {
-            if(pageTable[m].lastUsed < oldest) {
-              oldest = pageTable[m].lastUsed;
-              o = m; 
-            }
+      // Least Recently Used
+      if(lru == true) {
+        printf("using LRU\n");
+        //replace value which was used least recently
+        int o = 0; 
+        long double oldest = pageTable[0].lastUsed; 
+        for(j=1; j < frames; j++) {
+          if(pageTable[j].lastUsed < oldest) {
+            oldest = pageTable[j].lastUsed;
+            o = j;
           }
-          pageTable[o].frameNumber = q; 
-          pageTable[o].useCount = 1; 
-          gettimeofday(&curTime, NULL);
-          pageTable[o].lastUsed = curTime.tv_usec;
         }
-        // Least Frequently Used
-        else if(lfu == 1) {
-          //replace least frequently used value
-          int n, lu=0; 
-          int leastUsed = pageTable[0].useCount;
-          for(n=1; n < frames; n++) {
-            if(pageTable[n].useCount < leastUsed) {
-              leastUsed = pageTable[n].lastUsed;
-              lu = n;
-            }
-          }
-          pageTable[lu].frameNumber = q;
-          pageTable[lu].useCount = 1;
-          gettimeofday(&curTime, NULL);
-          pageTable[lu].lastUsed = curTime.tv_usec;
-        }
-        else {
-          printf("ERROR: Algorithm not reached.\n");
-        }
+        pageTable[o].frameNumber = q; 
+        pageTable[o].useCount = 1; 
+        gettimeofday(&curTime, NULL);
+        pageTable[o].lastUsed = curTime.tv_usec;
       }
-    }
-    printf("\nResulting list: ");
-    for(o = 0; o < frames; o++) {
-      printf("%d, ", pageTable[o].frameNumber); 
+      // Least Frequently Used
+      else if(lfu == true) {
+        printf("using LFU\n");
+        //replace least frequently used value
+        int lu=0; 
+        int leastUsed = pageTable[0].useCount;
+        for(j=1; j < frames; j++) {
+          if(pageTable[j].useCount < leastUsed) {
+            leastUsed = pageTable[j].lastUsed;
+            lu = j;
+          }
+        }
+        pageTable[lu].frameNumber = q;
+        pageTable[lu].useCount = 1;
+        gettimeofday(&curTime, NULL);
+        pageTable[lu].lastUsed = curTime.tv_usec;
+      }
+      else
+        printf("ERROR: Algorithm not reached.\n");
+      
+      printf("\nResulting list: ");
+      for(i = 0; i < frames; i++)
+        printf("%d, ", pageTable[i].frameNumber);
     }
   }
 
