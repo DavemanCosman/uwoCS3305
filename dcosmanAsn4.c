@@ -129,7 +129,7 @@ int main(int argc, char** argv)
     // check if item was inserted into page table
     if(hit == false) {
       faults++;
-      printf("\nFound a fault");
+      //printf("\nFound a fault");
       // Least Recently Used
       if(lru == true) {
         //printf("\nusing LRU");
