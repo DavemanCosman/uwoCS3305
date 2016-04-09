@@ -115,7 +115,7 @@ int main(int argc, char** argv)
        }
     }
     if(hit != 1) {
-      faults++; prinft("! ");
+      faults++; printf("! ");
       // check if there is an empty frame, if so put new value in
       for(i=0; i < frames; i++) {
         if(pageTable[i].useCount == 0) {
