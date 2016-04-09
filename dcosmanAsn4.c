@@ -60,8 +60,9 @@ int main(int argc, char** argv)
   else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
     lru = 1;
   else {
-    perror("Algorithm error\n");
+    perror("Error\n");
     printf("Indicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
+    return 22;
   }
   // create space for page table entries
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
