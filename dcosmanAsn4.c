@@ -164,7 +164,7 @@ int main(int argc, char** argv)
       }
     }
     printf("\nResulting list: ");
-    for(int o = 0; o < frames; o++) {
+    for(o = 0; o < frames; o++) {
       printf("%d, ", pageTable[o].frameNumber); 
     }
   }
