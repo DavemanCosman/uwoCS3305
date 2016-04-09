@@ -3,7 +3,7 @@
 #include <math.h>
 #include <time.h>
 
-/*structures*/
+// File structure for page reference
 typedef struct pageInfo
 {
   int frameNumber; 
@@ -11,57 +11,66 @@ typedef struct pageInfo
   int useCount; 
 } pageInfoEntry;
 
-/*global variables*/
-int faults = 0; 
-struct timeval curTime; 
+// Global variables
+int faults = 0; // to store faults found
+struct timeval curTime; // represents real time for lastUsed
 
-/* main program receives arguments and runs simulator depending on user
- * defined algorithm Least Recently Used or Least Frequently Used */
+/* Method: main
+ * Memory Trace simulator
+ *
+ * Accepted arguments:
+ * - frames used on simulation
+ * - file name with memory trace (page references vary: 0 to 1023)
+ * - LRU (Least Recently Used), LFU (Least Frequently Used)
+ *
+ * NOTE: TLB not included in asn, ignore references to it
+ */
 int main(int argc, char** argv) 
 {
-  int frames;  
-  char *algorithm; 
-  char *filename; 
-  FILE *file; 
-  pageInfoEntry *pageTable;  //page Table array 
-  pageInfoEntry *tlb;       //ignore -not being used for this assignment 
-  char *query; 
+  int frames;
+  char *algorithm;
+  char *filename;
+  FILE *file;
+  pageInfoEntry *pageTable;   // pointer to page table, stored as an array
+  pageInfoEntry *tlb;         //ignore -not being used for this assignment
+  char *query;                // queries to be stored from the file referenced
   int lfu = 0; 
   int lru = 0; 
 
   /*check for command line argument - assumes valid digit entered*/
   if (argc != 4){
-      perror("Please enter number of frames, filename and algorithm\n");
+      perror("Input Error\n");
+      printf("Usage: simulator [frameRefNumber] [filename] [LRU (Least Recently Used), LFU (Least Frequently Used)]\n");
+      printf("Example: 4 trace LRU\n");
       return 1;
   }
 
-  /*get number of frames from command line argument*/
-  frames = atoi(argv[1]);
-  /*make sure number of frames given isn't 0*/
+  frames = atoi(argv[1]); // get frames
+  // Check for 0 frames entered
   if(frames == 0)
   {
-    printf("Please enter a size greater than 0\n"); 
+    perror("Frame number error\n");
+    printf("Number of frames to be used must not be 0\n"); 
     exit(0); 
   }
-  filename = argv[2]; 
-  file = fopen(filename, "r"); 
-  algorithm = argv[3]; 
+  filename = argv[2]; // get file name
+  file = fopen(filename, "r"); // open the file
+  algorithm = argv[3]; // LRU or LFU
 
-  /*deterime algorithm type and set*/
-  if(strncmp(algorithm, "lfu", 3) == 0 || strncmp(algorithm, "LFU", 3) == 0)
-  {
-     lfu = 1;  
+  // deterime whether algorithm is LFU or LRU
+  if(strncmp(algorithm, "LFU", 3) == 0 || strncmp(algorithm, "lfu", 3) == 0)
+     lfu = 1;
+  else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
+    lru = 1;
+  else {
+    perror("Algorithm error\n");
+    printf("Indicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
   }
-  else if(strncmp(algorithm, "lru", 3) == 0 || strncmp(algorithm, "LRU", 3) == 0)
-  {
-     lru = 1;  
- }
+  // create space for page table entries
+  pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
+  tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
 
-
-  /*create space for arrays*/
-  pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry)); 
-
-  /*initialize all frames in page table to -1*/
+  // Initialize defaults for page table:
   int i, j, k; 
   for(i =0; i < frames; i++)
   {
@@ -70,61 +79,46 @@ int main(int argc, char** argv)
     pageTable[i].useCount = 0; 
   }
 
-  /*get number of queries from file*/
-  int lineCount=0; //number of lines in the file
-
-  int ch; 
-  while(!feof(file))
-  {
-     ch = fgetc(file);
-     if(ch == '\n')
-     {
-       lineCount++;
-     }
+  // initialize page table array with entries from file
+  int lineCount = 0; // number of lines in the file
+  int ch;
+  while(!feof(file)) {
+    ch = fgetc(file);
+    if(ch == '\n')
+      lineCount++;
   }
-  
-  /*allocate space for tlb array - ignore not used for this assignment*/
-  tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
- 
-  /*initialize page table array with entries from file*/
+
+  // initialize page table array with entries from file
   int pt = 0, q; 
   rewind(file);
   fscanf(file, "%d", &q); 
   while(!feof(file))
   {
     tlb[pt].frameNumber = q;
-    tlb[pt].useCount = 0; 
     tlb[pt].lastUsed = 0; 
+    tlb[pt].useCount = 0;
     pt++;
     fscanf(file, "%d", &q); 
   }
 
-  /*read elements in file and check if they are in table yet*/
+  // read elements in file and check if they are in table yet
   rewind(file);
-  int hit; 
-
-  fscanf(file, "%d", &q); 
-  while(!feof(file))
-  {
+  int hit;
+  while(!feof(file)) {
+    fscanf(file, "%d", &q);
     hit = 0; 
-    
-    /*check if frame number in table matches*/
-    for(j = 0; j < frames; j++)
-    {
-       if(pageTable[j].frameNumber == q)
-       {
-         hit = 1;
-         break; 
+    // check if frame number in table matches
+    for(j = 0; j < frames; j++) {
+      if(pageTable[j].frameNumber == q) {
+        hit = 1;
+        break; 
        }
     }
-    if(hit != 1)
-    {
+    if(hit != 1) {
       faults++; 
-      //check if there is an empty frame, if so put new value in
-      for(i=0; i < frames; i++)
-      {
-        if(pageTable[i].useCount == 0)
-        {
+      // check if there is an empty frame, if so put new value in
+      for(i=0; i < frames; i++) {
+        if(pageTable[i].useCount == 0) {
           pageTable[i].frameNumber = q;
           pageTable[i].useCount++; 
           gettimeofday(&curTime, NULL); 
@@ -133,20 +127,15 @@ int main(int argc, char** argv)
           break;
         }
       }
-      /*if no empty slot (hit is still false), replace value dependent
-      on chosen algorithm*/ 
-      if(hit != 1)
-      {
-        /*********** Least Recently Used *************/
-        if(lru == 1)
-        {
+      // if no empty slot (hit is still false), use lru or lfu algorithm
+      if(hit != 1) {
+        // Least Recently Used
+        if(lru == 1) {
           //replace value which was used least recently
           int m, o = 0; 
           long double oldest = pageTable[0].lastUsed; 
-          for(m=1; m < frames; m++)
-          {
-            if(pageTable[m].lastUsed < oldest)
-            {
+          for(m=1; m < frames; m++) {
+            if(pageTable[m].lastUsed < oldest) {
               oldest = pageTable[m].lastUsed;
               o = m; 
             }
@@ -156,47 +145,38 @@ int main(int argc, char** argv)
           gettimeofday(&curTime, NULL);
           pageTable[o].lastUsed = curTime.tv_usec;
         }
-        else if(lfu == 1)
-        {
-          /************ Least Frequently Used *******/
+        // Least Frequently Used
+        else if(lfu == 1) {
           //replace least frequently used value
-         int n, lu=0; 
-         int leastUsed = pageTable[0].useCount;
-         for(n=1; n < frames; n++)
-         {
-            if(pageTable[n].useCount < leastUsed)
-            {
-                 leastUsed = pageTable[n].lastUsed;
-                 lu = n;
+          int n, lu=0; 
+          int leastUsed = pageTable[0].useCount;
+          for(n=1; n < frames; n++) {
+            if(pageTable[n].useCount < leastUsed) {
+              leastUsed = pageTable[n].lastUsed;
+              lu = n;
             }
-         }
-         pageTable[lu].frameNumber = q;
-         pageTable[lu].useCount = 1;
-         gettimeofday(&curTime, NULL);
-         pageTable[lu].lastUsed = curTime.tv_usec;
+          }
+          pageTable[lu].frameNumber = q;
+          pageTable[lu].useCount = 1;
+          gettimeofday(&curTime, NULL);
+          pageTable[lu].lastUsed = curTime.tv_usec;
         }
-        else
-        {
-          perror("Error Encountered\n"); 
+        else {
+          perror("Error: lfu or lru match error\n");
         }
       }
-
     }
-    fscanf(file, "%d", &q);
   }
-          
 
   int o;
-  for(o=0; o < frames; o++)
-  {
+  for(o=0; o < frames; o++) {
     printf("pageTable at %d is %d\n", o, pageTable[o].frameNumber); 
   }
   printf("Number of page faults incurred was %d\n", faults); 
 
-  /*cleanup*/
+  // cleanup
   close(file); 
   free(tlb); 
   free(pageTable); 
   return 0; 
 }
-
