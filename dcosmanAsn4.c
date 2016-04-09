@@ -95,7 +95,7 @@ int main(int argc, char** argv)
   while(!feof(file))
   {
     fscanf(file, "%d", &q); 
-    printf("scanning file: q = %d", q);
+    printf("scanning file: q = %d\n", q);
     tlb[i].frameNumber = q;
     tlb[i].lastUsed = 0; 
     tlb[i].useCount = 0;
@@ -166,7 +166,8 @@ int main(int argc, char** argv)
     }
   }
 
-  printf("\nPage faults encountered: %d\n", faults); 
+  printf("\nPage faults encountered: %d\n", faults);
+  perror("Any errors");
 
   // cleanup
   close(file); 
