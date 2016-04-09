@@ -48,9 +48,7 @@ int main(int argc, char** argv)
   // Get frames entered
   frames = atoi(argv[1]);
   if(frames == 0) {
-    perror("Frame error");
-    printf("Number of frames must not be 0\n"); 
-    return(-1); 
+    perror("Frame error: Number of frames must not be 0\n"); 
   }
   filename = argv[2]; // get file name
   file = fopen(filename, "r"); // open the file
@@ -69,7 +67,7 @@ int main(int argc, char** argv)
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
 
   // Initialize defaults for page table:
-  for(i = 0; i < 0; i++)
+  for(i = 0; i < frames; i++)
   {
     pageTable[i].frameNumber = -1; 
     pageTable[i].lastUsed = 0; 
