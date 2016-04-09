@@ -48,7 +48,8 @@ int main(int argc, char** argv)
   // Get frames entered
   frames = atoi(argv[1]);
   if(frames <= 0) {
-      perror("Frame error: Number of frames must be greater than 0");
+      printf("Frame error: Number of frames must be greater than 0");
+      return(-1);
     }
   // create space for page table entries and initialize defaults
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
@@ -58,8 +59,14 @@ int main(int argc, char** argv)
     pageTable[i].lastUsed = 0; 
     pageTable[i].useCount = 0; 
   }
-  filename = argv[2]; // get file name
+  
+  // Get file location
+  filename = argv[2];
   file = fopen(filename, "r"); // open the file
+  if (file == NULL) {
+    perror("File error");
+    return(-1);
+  }
   algorithm = argv[3]; // LRU or LFU
 
   // deterime whether algorithm is LFU or LRU
