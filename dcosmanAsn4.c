@@ -53,10 +53,9 @@ int main(int argc, char** argv)
     }
   // create space for page table entries and initialize defaults
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
-  for(i = 0; i < frames; i++)
-  {
-    pageTable[i].frameNumber = NULL; 
-    pageTable[i].lastUsed = 0; 
+  for(i = 0; i < frames; i++) {
+    pageTable[i].frameNumber = -1;
+    pageTable[i].lastUsed = 0;
     pageTable[i].useCount = 0; 
   }
   
@@ -75,7 +74,7 @@ int main(int argc, char** argv)
   else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
     lru = 1;
   else {
-    printf("Incorrect argument: %c.\n", &algorithm);
+    printf("Incorrect argument: %s.\n", algorithm);
     return -1;
   }
 
