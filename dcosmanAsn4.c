@@ -48,14 +48,14 @@ int main(int argc, char** argv)
   // Get frames entered
   frames = atoi(argv[1]);
   if(frames <= 0) {
-      printf("Frame error: Number of frames must be greater than 0");
+      printf("Frame error: Number of frames must be greater than 0\n");
       return(-1);
     }
   // create space for page table entries and initialize defaults
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
   for(i = 0; i < frames; i++)
   {
-    pageTable[i].frameNumber = -1; 
+    pageTable[i].frameNumber = NULL; 
     pageTable[i].lastUsed = 0; 
     pageTable[i].useCount = 0; 
   }
