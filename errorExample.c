@@ -12,7 +12,7 @@ int main ()
    if( fp == NULL ) 
    {
       perror("Error: ");
-      return(-1);
+      return(-2);
    }
    fclose(fp);
       
