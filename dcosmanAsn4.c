@@ -27,6 +27,7 @@ struct timeval curTime; // represents real time for lastUsed
  */
 int main(int argc, char** argv) 
 {
+  int i, j, o;
   int frames;
   char *algorithm;
   char *filename;
@@ -66,7 +67,7 @@ int main(int argc, char** argv)
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
 
   // Initialize defaults for page table:
-  for(int i =0; i < frames; i++)
+  for(i = 0; i < frames; i++)
   {
     pageTable[i].frameNumber = -1; 
     pageTable[i].lastUsed = 0; 
@@ -89,6 +90,7 @@ int main(int argc, char** argv)
   while(!feof(file))
   {
     fscanf(file, "%d", &q); 
+    printf("scanning file: q = %d", q);
     tlb[pt].frameNumber = q;
     tlb[pt].lastUsed = 0; 
     tlb[pt].useCount = 0;
@@ -102,7 +104,7 @@ int main(int argc, char** argv)
     fscanf(file, "%d", &q);
     hit = 0; 
     // check if frame number in table matches
-    for(int j = 0; j < frames; j++) {
+    for(j = 0; j < frames; j++) {
       if(pageTable[j].frameNumber == q) {
         hit = 1;
         break; 
