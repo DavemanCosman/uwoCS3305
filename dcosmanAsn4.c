@@ -92,7 +92,7 @@ int main(int argc, char** argv)
       lineCount++;
   }
   tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
-  j = 0;
+  int j = 0, q;
   rewind(file);
   while(!feof(file) && j < lineCount)
   {
