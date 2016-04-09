@@ -115,7 +115,9 @@ int main(int argc, char** argv)
        }
     }
     if(hit != 1) {
-      faults++; 
+      faults++;
+      printf("NOTE: faults increase\n");
+      printf("");
       // check if there is an empty frame, if so put new value in
       for(i=0; i < frames; i++) {
         if(pageTable[i].useCount == 0) {
@@ -170,7 +172,7 @@ int main(int argc, char** argv)
 
   int o;
   for(o=0; o < frames; o++) {
-    printf("Page tablee given frame %d: %d\n", o, pageTable[o].frameNumber); 
+    printf("Page table fault found at frame %d: %d\n", o, pageTable[o].frameNumber); 
   }
   printf("Page faults found: %d\n", faults); 
 
