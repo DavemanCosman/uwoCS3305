@@ -48,9 +48,9 @@ int main(int argc, char** argv)
   // Get frames entered
   frames = atoi(argv[1]);
   if(frames == 0) {
-    printf("Frame number error: \n");
+    perror("Frame number error");
     printf("Number of frames to be used must not be 0\n"); 
-    exit(0); 
+    return(-1); 
   }
   filename = argv[2]; // get file name
   file = fopen(filename, "r"); // open the file
