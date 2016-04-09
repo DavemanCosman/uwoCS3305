@@ -127,7 +127,7 @@ int main(int argc, char** argv)
       faults++;
       // Least Recently Used
       if(lru == true) {
-        printf("using LRU\n");
+        printf("\nusing LRU");
         //replace value which was used least recently
         int o = 0; 
         long double oldest = pageTable[0].lastUsed; 
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
       }
       // Least Frequently Used
       else if(lfu == true) {
-        printf("using LFU\n");
+        printf("\nusing LFU");
         //replace least frequently used value
         int lu=0; 
         int leastUsed = pageTable[0].useCount;
