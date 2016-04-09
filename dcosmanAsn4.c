@@ -47,8 +47,16 @@ int main(int argc, char** argv)
 
   // Get frames entered
   frames = atoi(argv[1]);
-  if(frames == 0) {
-    perror("Frame error: Number of frames must not be 0\n"); 
+  // create space for page table entries and initialize defaults
+  pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
+  for(i = 0; i < frames; i++)
+  {
+    if(frames == 0) {
+      perror("Frame error: Number of frames must not be 0\n");
+      }
+    pageTable[i].frameNumber = -1; 
+    pageTable[i].lastUsed = 0; 
+    pageTable[i].useCount = 0; 
   }
   filename = argv[2]; // get file name
   file = fopen(filename, "r"); // open the file
@@ -62,16 +70,6 @@ int main(int argc, char** argv)
   else {
     perror("Incorrect argument;\nIndicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
     return 22;
-  }
-  // create space for page table entries
-  pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
-
-  // Initialize defaults for page table:
-  for(i = 0; i < frames; i++)
-  {
-    pageTable[i].frameNumber = -1; 
-    pageTable[i].lastUsed = 0; 
-    pageTable[i].useCount = 0; 
   }
 
   // initialize page table array with entries from file
