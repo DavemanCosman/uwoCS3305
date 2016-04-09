@@ -39,10 +39,10 @@ int main(int argc, char** argv)
 
   /*check for command line argument - assumes valid digit entered*/
   if (argc != 4){
-      perror("Input Error\n");
+      perror("Input Error");
+      return (-1);
       printf("Usage: simulator [frameRefNumber] [filename] [LRU (Least Recently Used), LFU (Least Frequently Used)]\n");
       printf("Example: 4 trace LRU\n");
-      return 1;
   }
 
   frames = atoi(argv[1]); // get frames
