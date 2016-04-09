@@ -106,7 +106,8 @@ int main(int argc, char** argv)
 
   // read elements in file and check if they are in table yet
   rewind(file);
-  while(!feof(file)) {
+  int k = 0;
+  while(!feof(file) && k < lineCount) {
     fscanf(file, "%d", &q);
     hit = false; 
     // check if frame number in table matches or if empty slot exists
@@ -168,6 +169,7 @@ int main(int argc, char** argv)
     printf("\nResulting list: ");
     for(i = 0; i < frames; i++) {
       printf("%d, ", pageTable[i].frameNumber); }
+    k++;
   }
 
   printf("\nPage faults encountered: %d\n", faults);
