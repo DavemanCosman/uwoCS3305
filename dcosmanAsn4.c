@@ -32,23 +32,19 @@ int main(int argc, char** argv)
   char *filename;
   FILE *file;
   pageInfoEntry *pageTable;   // pointer to page table, stored as an array
-  pageInfoEntry *tlb;         //ignore -not being used for this assignment
-  char *query;                // queries to be stored from the file referenced
-  int lfu = 0; 
-  int lru = 0; 
+  pageInfoEntry *tlb;         // TLB, now just used to store the contents of the file
+  int lfu = 0, lru = 0;
 
   // check for command line argument - assumes valid digit entered
   if (argc != 4){
-    printf("Input Error: ");
-    printf("Usage: simulator [frameRefNumber] [filename] [LRU (Least Recently Used), LFU (Least Frequently Used)]\n");
-    printf("Example: 4 trace LRU\n");
+    printf("usage: ./simulator [frameRefNumber] [filename] [LRU | LFU]\n");
+    printf("example: 4 foo LRU\n");
     exit(0);
   }
 
-  frames = atoi(argv[1]); // get frames
-  // Check for 0 frames entered
-  if(frames == 0)
-  {
+  // Get frames entered
+  frames = atoi(argv[1]);
+  if(frames == 0) {
     printf("Frame number error: \n");
     printf("Number of frames to be used must not be 0\n"); 
     exit(0); 
@@ -70,8 +66,7 @@ int main(int argc, char** argv)
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
 
   // Initialize defaults for page table:
-  int i, j, k; 
-  for(i =0; i < frames; i++)
+  for(int i =0; i < frames; i++)
   {
     pageTable[i].frameNumber = -1; 
     pageTable[i].lastUsed = 0; 
@@ -91,14 +86,13 @@ int main(int argc, char** argv)
   // initialize page table array with entries from file
   int pt = 0, q; 
   rewind(file);
-  fscanf(file, "%d", &q); 
   while(!feof(file))
   {
+    fscanf(file, "%d", &q); 
     tlb[pt].frameNumber = q;
     tlb[pt].lastUsed = 0; 
     tlb[pt].useCount = 0;
     pt++;
-    fscanf(file, "%d", &q); 
   }
 
   // read elements in file and check if they are in table yet
@@ -108,14 +102,15 @@ int main(int argc, char** argv)
     fscanf(file, "%d", &q);
     hit = 0; 
     // check if frame number in table matches
-    for(j = 0; j < frames; j++) {
+    for(int j = 0; j < frames; j++) {
       if(pageTable[j].frameNumber == q) {
         hit = 1;
         break; 
        }
     }
     if(hit != 1) {
-      faults++; printf("! ");
+      faults++;
+      printf("! ");
       // check if there is an empty frame, if so put new value in
       for(i=0; i < frames; i++) {
         if(pageTable[i].useCount == 0) {
@@ -166,14 +161,13 @@ int main(int argc, char** argv)
         }
       }
     }
-    int o;
-    printf("\nResultig list: ");
-    for(o=0; o < frames; o++) {
+    printf("\nResulting list: ");
+    for(int o = 0; o < frames; o++) {
       printf("%d, ", pageTable[o].frameNumber); 
     }
   }
 
-  printf("Page faults encountered: %d\n", faults); 
+  printf("\nPage faults encountered: %d\n", faults); 
 
   // cleanup
   close(file); 
