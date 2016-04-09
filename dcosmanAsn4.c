@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -60,9 +61,7 @@ int main(int argc, char** argv)
   else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
     lru = 1;
   else {
-    perror("Error\n");
-    printf("Indicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
-    return 22;
+    printf("Incorrect argument;\nIndicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
   }
   // create space for page table entries
   pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
@@ -161,6 +160,7 @@ int main(int argc, char** argv)
         }
         else {
           perror("Error: lfu or lru match error\n");
+          return 22;
         }
       }
     }
