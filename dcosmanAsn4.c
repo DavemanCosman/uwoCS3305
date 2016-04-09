@@ -30,7 +30,6 @@ struct timeval curTime; // represents real time for lastUsed
  */
 int main(int argc, char** argv) 
 {
-  int i, j, q; // used for loops
   int frames;
   bool hit;
   char *algorithm;
@@ -38,7 +37,8 @@ int main(int argc, char** argv)
   FILE *file;
   pageInfoEntry *pageTable;   // pointer to page table, stored as an array
   pageInfoEntry *tlb;         // TLB, now just used to store the contents of the file
-  bool lfu = false, lru = false;
+  bool lfu = false;
+  bool lru = false;
 
   // check for command line argument - assumes valid digit entered
   if (argc != 4){
@@ -54,7 +54,8 @@ int main(int argc, char** argv)
       return(-1);
     }
   // create space for page table entries and initialize defaults
-  pageTable = (pageInfoEntry*)malloc(frames * sizeof(pageInfoEntry));
+  pageTable = (pageInfoEntry*)malloc(sizeof(pageInfoEntry)*frames);
+  int i;
   for(i = 0; i < frames; i++) {
     pageTable[i].frameNumber = -1;
     pageTable[i].lastUsed = 0;
@@ -83,7 +84,8 @@ int main(int argc, char** argv)
   }
 
   // initialize TLB array with entries from file
-  int c, lineCount = 0; // number of lines in the file
+  int c;
+  int lineCount = 0; // number of lines in the file
   while(!feof(file)) {
     c = fgetc(file);
     if(c == '\n')
@@ -92,7 +94,7 @@ int main(int argc, char** argv)
   tlb = (pageInfoEntry*)malloc(lineCount * sizeof(pageInfoEntry)); 
   j = 0;
   rewind(file);
-  while(!feof(file))
+  while(!feof(file) && j < lineCount)
   {
     fscanf(file, "%d", &q); 
     printf("scanning frame number: %d\n", q); // Problem here, last num duplicated.
