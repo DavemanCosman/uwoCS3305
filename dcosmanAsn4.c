@@ -37,19 +37,19 @@ int main(int argc, char** argv)
   int lfu = 0; 
   int lru = 0; 
 
-  /*check for command line argument - assumes valid digit entered*/
+  // check for command line argument - assumes valid digit entered
   if (argc != 4){
-      perror("Input Error");
-      return (-1);
-      printf("Usage: simulator [frameRefNumber] [filename] [LRU (Least Recently Used), LFU (Least Frequently Used)]\n");
-      printf("Example: 4 trace LRU\n");
+    printf("Input Error: ");
+    printf("Usage: simulator [frameRefNumber] [filename] [LRU (Least Recently Used), LFU (Least Frequently Used)]\n");
+    printf("Example: 4 trace LRU\n");
+    exit(0);
   }
 
   frames = atoi(argv[1]); // get frames
   // Check for 0 frames entered
   if(frames == 0)
   {
-    perror("Frame number error\n");
+    printf("Frame number error: \n");
     printf("Number of frames to be used must not be 0\n"); 
     exit(0); 
   }
