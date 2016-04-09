@@ -62,21 +62,21 @@ int main(int argc, char** argv)
   
   // Get file location
   filename = argv[2];
-  file = fopen(filename, "r"); // open the file
+  file = fopen(filename, "r");
   if (file == NULL) {
     perror("File error");
     return(-1);
   }
-  algorithm = argv[3]; // LRU or LFU
-
+  
   // deterime whether algorithm is LFU or LRU
+  algorithm = argv[3]; // LRU or LF
   if(strncmp(algorithm, "LFU", 3) == 0 || strncmp(algorithm, "lfu", 3) == 0)
      lfu = 1;
   else if(strncmp(algorithm, "LRU", 3) == 0 || strncmp(algorithm, "lru", 3) == 0)
     lru = 1;
   else {
-    perror("Incorrect argument;\nIndicate either LFU (Least Frequently Used) or LRU (Least Recently Used)\n");
-    return 22;
+    printf("Incorrect argument: %c.\n", &algorithm);
+    return -1;
   }
 
   // initialize page table array with entries from file
