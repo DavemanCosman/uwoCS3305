@@ -97,7 +97,7 @@ int main(int argc, char** argv)
   while(!feof(file) && j < lineCount)
   {
     fscanf(file, "%d", &q); 
-    printf("scanning frame number: %d\n", q); // Problem here, last num duplicated.
+    // printf("scanning frame number: %d\n", q); // Problem here, last num duplicated.
     tlb[j].frameNumber = q;
     tlb[j].lastUsed = 0; 
     tlb[j].useCount = 0;
@@ -116,8 +116,9 @@ int main(int argc, char** argv)
         pageTable[i].frameNumber = q;
         if (pageTable[i].useCount == 0) {
           faults++; // fault found if number of uses was 0 (null)
-          printf("\nFound a fault"); }
-        else { printf("\nFound a hit"); }
+          //printf("\nFound a fault");
+        }
+        //else { printf("\nFound a hit"); }
         pageTable[i].useCount++;
         gettimeofday(&curTime, NULL); 
         pageTable[i].lastUsed = curTime.tv_usec;
@@ -131,7 +132,7 @@ int main(int argc, char** argv)
       printf("\nFound a fault");
       // Least Recently Used
       if(lru == true) {
-        printf("\nusing LRU");
+        //printf("\nusing LRU");
         //replace value which was used least recently
         int o = 0; 
         long double oldest = pageTable[0].lastUsed; 
@@ -148,7 +149,7 @@ int main(int argc, char** argv)
       }
       // Least Frequently Used
       else if(lfu == true) {
-        printf("\nusing LFU");
+        //printf("\nusing LFU");
         //replace least frequently used value
         int lu=0; 
         int leastUsed = pageTable[0].useCount;
